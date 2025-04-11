@@ -1,0 +1,57 @@
+name: Release deploy
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+      - name: Install dependencies
+        run: go mod download
+      - name: Test
+        run: make govet
+      - name: Build
+        run: go build -installsuffix cgo -ldflags "-s" -ldflags "${GO_LDFLAGS}" -o ./main
+        env:
+          CGO_ENABLED: 0
+          GOOS: linux
+          GOARCH: amd64
+      - name: Deploy
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.RELEASE_HOST }}
+          username: ${{ secrets.RELEASE_USERNAME }}
+          passphrase: ${{ secrets.RELEASE_PASSPHRASE }}
+          key: ${{ secrets.RELEASE_KEY }}
+          port: ${{ secrets.RELEASE_PORT }}
+          source: "main"
+          target: "/app/server"
+      - name: Restart server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.RELEASE_HOST }}
+          username: ${{ secrets.RELEASE_USERNAME }}
+          passphrase: ${{ secrets.RELEASE_PASSPHRASE }}
+          key: ${{ secrets.RELEASE_KEY }}
+          port: ${{ secrets.RELEASE_PORT }}
+          script: systemctl restart comunion
+      - name: Notification
+        uses: erguotou520/instant-access-action@0.0.4
+        if: ${{ success() }}
+        with:
+          channel: "71c28249ce744d73b2af16b7c5364e45"
+          head: "{{branchName}}部署完成"
+          body: '{{author}} commit "{{commitMessage}}" on {{repositoryName}}#{{branchName}} branch at {{commitTime}}'
+      - name: Notification
+        uses: erguotou520/instant-access-action@0.0.4
+        if: ${{ failure() }}
+        with:
+          channel: "71c28249ce744d73b2af16b7c5364e45"
+          head: "{{branchName}}部署失败"
+          body: '{{author}} commit "{{commitMessage}}" on {{repositoryName}}#{{branchName}} branch at {{commitTime}}'

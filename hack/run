@@ -1,0 +1,101 @@
+#!/bin/bash
+set -e
+
+BDIR=`cd $( dirname "${BASH_SOURCE[0]}" ) && cd .. && pwd`
+cd ${BDIR}
+
+mysql_docker_run(){
+    docker run --rm --network host -e MYSQL_PWD=${MYSQLPASSWORD} -v `pwd`/hack/files:/files mysql:8.0.0 "${@}"
+}
+
+redis_docker_run(){
+    docker run --rm --network host redis "${@}"
+}
+
+function compile() {
+    version=${1:-ci-`date +%s`}
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -installsuffix cgo -ldflags "-s" -ldflags "${GO_LDFLAGS}" -o ./hack/build/app
+    docker build  -t app:${version} -f ./hack/docker/app
+    .Dockerfile .
+    echo ${version}------------------------------------------------
+}
+
+function start(){
+    export RUN_MODE=${RUN_MODE:-dev}
+    case "${RUN_MODE}" in
+        dev)
+            EGO_DEBUG=true go run main.go --config=./hack/config/config.dev.toml
+            ;;
+        test)
+            EGO_DEBUG=true go run main.go --config=./hack/config/config.test.toml
+            ;;
+        pro)
+            EGO_DEBUG=true go run main.go --config=./hack/config/config.toml
+            ;;
+    esac
+}
+
+function database(){
+    name=${2}
+    dump_host=${DATABASE_DUMP_HOST:-127.0.0.1}
+    wallet_address=${WALLET_ADDRESS:-0xDa2105e3287641564e373C401E2b891839eb14bC}
+    login_nonce=${WALLET_NONCE:-123123}
+    case "${name}" in
+        dump.db)
+            echo "mysql host is "${dump_host}
+            MYSQLPASSWORD=Comunion2021 mysql_docker_run mysqldump  -h ${dump_host} -P 3306 -u root -d comunion > hack/files/database.sql
+            ;;
+        init)
+            echo "mysql host is "${dump_host}
+            MYSQLPASSWORD=Comunion2021 mysql_docker_run mysql -h ${dump_host} -P 3306 -u root --execute="DROP DATABASE IF EXISTS comunion;CREATE DATABASE comunion;USE comunion;"
+            MYSQLPASSWORD=Comunion2021 mysql_docker_run mysql -h ${dump_host} -P 3306 -u root comunion --execute="SOURCE /files/database.sql"
+            ;;
+        set_nonce)
+            echo "set ${wallet_address} ${login_nonce}"
+            redis_docker_run redis-cli -h ${dump_host} -p 6379  set ${wallet_address} ${login_nonce}
+            ;;
+        *)
+            show_help "no command ${name}"
+            ;;
+    esac
+}
+
+function gen() {
+    cd ${BDIR}/hack/gnorm && gnorm gen
+}
+
+function show_help(){
+    cat <<-EOF
+${@}
+USAGE: ./hack/run [COMMANDS]
+COMMANDS:
+    database [PROGRAM]
+    start    [app
+EOF
+    exit 1
+}
+
+case "${1}" in
+    database)
+        # shellcheck disable=SC2068
+        database ${1} ${@:2}
+        ;;
+    start)
+        # shellcheck disable=SC2068
+        start ${@:2}
+        ;;
+    compile)
+        # shellcheck disable=SC2068
+        compile ${@:2}
+        ;;
+    gen)
+         gen
+         ;;
+    -h)
+        show_help
+        ;;
+    *)
+        show_help "no command ${1}"
+        exit 1
+        ;;
+esac

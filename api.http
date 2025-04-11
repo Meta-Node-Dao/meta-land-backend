@@ -1,0 +1,294 @@
+### get token by comer id
+GET http://localhost:9002/test/token/124274732118016
+content-type: application-json
+
+### get crowdfundable-startups
+GET http://localhost:9002/cores/startups/crowdfundable
+content-type: application-json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNzQ3MzIxMTgwMTYiLCJleHAiOjE2NTg2NDc4MjQsImlhdCI6MTY1ODM4ODYyNH0.6uU3unLh-3l_10xPW2mTi-VPNIQ8MxcAn5vU79SGw0U
+
+### create crowdfunding
+POST http://localhost:9002/crowdfunding
+content-type: application-json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNzQ3MzIxMTgwMTYiLCJleHAiOjE2NTg2NDc4MjQsImlhdCI6MTY1ODM4ODYyNH0.6uU3unLh-3l_10xPW2mTi-VPNIQ8MxcAn5vU79SGw0U
+
+
+{
+  "startupId": 124275206074368,
+  "teamWallet": "0xsfadfasfqrewrwr477373744",
+  "raiseGoal": 66741386.84909852,
+  "swapPercent": 37614474.37841161,
+  "buyPrice": 94390740.76711349,
+  "sellTax": 33227631.68119467,
+  "maxBuyAmount": 63518011.856761456,
+  "startTime": "2021-02-18T21:54:42.123Z",
+  "endTime": "2023-02-18T21:54:42.123Z",
+  "poster": "qui",
+  "description": "Lorem dolor in in anim",
+  "sellTokenContract": "est mollit officia aliqua",
+  "sellTokenDeposit": 22091555.015087485,
+  "buyTokenContract": "0xyuuuuuuuuuuuuuuuuuuuuuuu",
+  "maxSellPercent": 61719033.886085704,
+  "txHash": "est tempor do",
+  "chainId": 44147966,
+  "sellTokenDecimals": -2093354,
+  "buyTokenSupply": 72656156.97831696,
+  "sellTokenName": "sint eu nisi consequat",
+  "sellTokenSymbol": "laborum consectetur",
+  "detail": "id Excepteur dolor consectetur adipisicing",
+  "buyTokenDecimals": -847786,
+  "buyTokenSymbol": "aliquip minim"
+}
+
+
+### REMOTE dev env
+POST http://localhost:9002/cores/crowdfunding
+content-type: application-json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNzQ3MzIxMTgwMTYiLCJleHAiOjE2NTg2NDc4MjQsImlhdCI6MTY1ODM4ODYyNH0.6uU3unLh-3l_10xPW2mTi-VPNIQ8MxcAn5vU79SGw0U
+
+
+{
+  "startupId": 124275206074368,
+  "teamWallet": "0xsfadfasfqrewrwr477373744",
+  "raiseGoal": 66741386.84909852,
+  "swapPercent": 37614474.37841161,
+  "buyPrice": 94390740.76711349,
+  "sellTax": 33227631.68119467,
+  "maxBuyAmount": 63518011.856761456,
+  "startTime": "2022-08-13T21:54:42.123Z",
+  "endTime": "2023-02-18T21:54:42.123Z",
+  "poster": "qui",
+  "description": "Lorem dolor in in anim",
+  "sellTokenContract": "est mollit officia aliqua",
+  "sellTokenDeposit": 22091555.015087485,
+  "buyTokenContract": "0xyuuuuuuuuuuuuuuuuuuuuuuu",
+  "maxSellPercent": 61719033.886085704,
+  "txHash": "est tempor do",
+  "chainId": 44147966,
+  "sellTokenDecimals": -2093354,
+  "buyTokenSupply": 72656156.97831696,
+  "sellTokenName": "sint eu nisi consequat",
+  "sellTokenSymbol": "laborum consectetur",
+  "detail": "id Excepteur dolor consectetur adipisicing",
+  "buyTokenDecimals": -847786,
+  "buyTokenSymbol": "aliquip minim"
+}
+
+
+### public
+POST http://localhost:9002/cores/crowdfundings
+content-type: application-json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNzQ3MzIxMTgwMTYiLCJleHAiOjE2NTg2NDc4MjQsImlhdCI6MTY1ODM4ODYyNH0.6uU3unLh-3l_10xPW2mTi-VPNIQ8MxcAn5vU79SGw0U
+
+{"limit":2,"page":1,"keyword":""}
+
+
+###
+POST http://localhost:9002/cores/crowdfundings/posted
+content-type: application-json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNzQ3MzIxMTgwMTYiLCJleHAiOjE2NTg2NDc4MjQsImlhdCI6MTY1ODM4ODYyNH0.6uU3unLh-3l_10xPW2mTi-VPNIQ8MxcAn5vU79SGw0U
+
+{"limit":5,"page":1,"keyword":""}
+
+###
+POST http://localhost:9002/cores/crowdfundings/participated
+content-type: application-json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNzQ3MzIxMTgwMTYiLCJleHAiOjE2NTg2NDc4MjQsImlhdCI6MTY1ODM4ODYyNH0.6uU3unLh-3l_10xPW2mTi-VPNIQ8MxcAn5vU79SGw0U
+
+{"limit":5,"page":1,"keyword":""}
+
+
+###
+POST http://localhost:9002/cores/crowdfundings/142397787025408/histories
+content-type: application-json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNzQ3MzIxMTgwMTYiLCJleHAiOjE2NTg2NDc4MjQsImlhdCI6MTY1ODM4ODYyNH0.6uU3unLh-3l_10xPW2mTi-VPNIQ8MxcAn5vU79SGw0U
+
+{"limit":5,"page":1}
+
+###
+POST http://localhost:9002/cores/crowdfundings/142397787025408/investments
+content-type: application-json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNzQ3MzIxMTgwMTYiLCJleHAiOjE2NTg2NDc4MjQsImlhdCI6MTY1ODM4ODYyNH0.6uU3unLh-3l_10xPW2mTi-VPNIQ8MxcAn5vU79SGw0U
+
+{"limit":5,"page":1}
+
+###
+POST http://localhost:9002/account/profile/educations
+Content-Type: application/json
+
+{
+  "educations": [
+    {
+      "school": "xxx",
+      "major": "xxxxx",
+      "graduatedAt": "2022-08-12"
+    }
+  ]
+}
+
+### proposals-public-list
+POST http://localhost:9002/cores/proposals/public-list
+Content-Type: application/json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNTc2MDI1ODA0ODAiLCJleHAiOjE2NjM4MjU4NjMsImlhdCI6MTY2MzU2NjY2M30.jy7VFQ9k1GccxmHY1tZftMDQgCjkW1-46D368DJkfgM
+
+{
+  "limit": 10,
+  "page": 1
+}
+
+### proposals-comer-post
+POST http://localhost:9002/cores/proposals/comer/124578311647232/post
+Content-Type: application/json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNTc2MDI1ODA0ODAiLCJleHAiOjE2NjMyMjc4NTIsImlhdCI6MTY2Mjk2ODY1Mn0._ekSVJl4HDpK41WUG-xFqyp6wJBDH-IgFny7fnmouZs
+
+{
+  "limit": 24,
+  "page": 1
+}
+
+### proposals-comer-participate
+POST http://localhost:9002/cores/proposals/comer/124257602580480/participate
+Content-Type: application/json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNTc2MDI1ODA0ODAiLCJleHAiOjE2NjMyMjc4NTIsImlhdCI6MTY2Mjk2ODY1Mn0._ekSVJl4HDpK41WUG-xFqyp6wJBDH-IgFny7fnmouZs
+
+{
+  "limit": 24,
+  "page": 1
+}
+
+### proposals-of-startup
+POST http://localhost:9002/cores/proposals/startup/130251204276224
+Content-Type: application/json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNTc2MDI1ODA0ODAiLCJleHAiOjE2NjMyMjc4NTIsImlhdCI6MTY2Mjk2ODY1Mn0._ekSVJl4HDpK41WUG-xFqyp6wJBDH-IgFny7fnmouZs
+
+{
+  "limit": 24,
+  "page": 1
+}
+
+### comer-participated-crowdfunding
+GET http://localhost:9002/account/comer/129525702930432/participated-crowdfundings?limit=999&page=1&comerID=129525702930432
+Content-Type: application/json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNTc2MDI1ODA0ODAiLCJleHAiOjE2NjMyMjc4NTIsImlhdCI6MTY2Mjk2ODY1Mn0._ekSVJl4HDpK41WUG-xFqyp6wJBDH-IgFny7fnmouZs
+
+
+
+### comer-posted-crowdfunding
+GET http://localhost:9002/account/comer/129525702930432/posted-crowdfundings?limit=999&page=1&comerID=129525702930432
+Content-Type: application/json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNTc2MDI1ODA0ODAiLCJleHAiOjE2NjMyMjc4NTIsImlhdCI6MTY2Mjk2ODY1Mn0._ekSVJl4HDpK41WUG-xFqyp6wJBDH-IgFny7fnmouZs
+
+
+### update-finance-setting
+PUT http://localhost:9002/cores/startups/130251204276224/financeSetting
+Content-Type: application/json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjk1MjU3MDI5MzA0MzIiLCJleHAiOjE2NjI5MDc0MzYsImlhdCI6MTY2MjY0ODIzNn0.jLnEmupax6aj9ndXIpmXy-CossUEW5g0LoCE5iDvgqc
+
+{
+  "tokenContractAddress": "0x34d0B59D2E1262FD04445F7768F649fF6DC431a7",
+  "launchNetwork": 1,
+  "tokenName": "test1",
+  "tokenSymbol": "test1Symbo",
+  "totalSupply": 1,
+  "presaleStart": "2006-01-02T15:04:05Z",
+  "presaleEnd": "2006-01-02T15:04:05Z",
+  "launchDate": "2006-01-02T15:04:05Z",
+  "wallets": [
+    {
+      "walletName": "222333333",
+      "walletAddress": "0x34d0B59D2E1262FD04445F7768F649fF6DC431a7",
+      "id": 150673513721856
+    }
+  ]
+}
+
+
+### update-governance-setting
+POST http://localhost:9002/cores/governance-setting/153260019363840
+Content-Type: application/json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNTc2MDI1ODA0ODAiLCJleHAiOjE2NjI5MDkyNTAsImlhdCI6MTY2MjY1MDA1MH0.TdntgGpLWkRBKEYIBgAp9S0LYgRIDhT7nGFYXuU2JsI
+
+{
+  "voteSymbol": "uvu",
+  "allowMember": true,
+  "proposalThreshold": 0,
+  "proposalValidity": 0,
+  "strategies": [
+    {
+      "strategyName": "Ticket"
+    }
+  ],
+  "admins": [
+    {
+      "walletAddress": "0xD58B260F54d913B35fB5c52CB4A6f6Ee71F0A90D"
+    }
+  ]
+}
+
+### get-proposal-detail
+GET http://localhost:9002/cores/proposals/156344942538752
+Content-Type: application/json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNTc2MDI1ODA0ODAiLCJleHAiOjE2NjM4MjU4NjMsImlhdCI6MTY2MzU2NjY2M30.jy7VFQ9k1GccxmHY1tZftMDQgCjkW1-46D368DJkfgM
+
+
+### get-governance-setting
+GET http://localhost:9002/cores/startups/129550801645568/governance-setting
+Content-Type: application/json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNTc2MDI1ODA0ODAiLCJleHAiOjE2NjMyMjc4NTIsImlhdCI6MTY2Mjk2ODY1Mn0._ekSVJl4HDpK41WUG-xFqyp6wJBDH-IgFny7fnmouZs
+
+### vote-proposal
+POST http://localhost:9002/cores/proposals/154344133701632/vote
+Content-Type: application/json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNTc2MDI1ODA0ODAiLCJleHAiOjE2NjMyMjc4NTIsImlhdCI6MTY2Mjk2ODY1Mn0._ekSVJl4HDpK41WUG-xFqyp6wJBDH-IgFny7fnmouZs
+
+{
+  "voterWalletAddress": "0xD58B260F54d913B35fB5c52CB4A6f6Ee71F0A90D",
+  "choiceItemId": 154344133701634,
+  "choiceItemName": "12",
+  "votes": 2.00001,
+  "ipfsHash": "QmPgEq43JSKBX2N3tx3CxxwSer8s5yptZ7E9uiw1W3TkQy"
+}
+
+
+### vote-records
+POST http://localhost:9002/cores/proposals/154344133701632/vote-records
+Content-Type: application/json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNTc2MDI1ODA0ODAiLCJleHAiOjE2NjMyMjc4NTIsImlhdCI6MTY2Mjk2ODY1Mn0._ekSVJl4HDpK41WUG-xFqyp6wJBDH-IgFny7fnmouZs
+
+{
+  "page": 1,
+  "limit": 10
+}
+
+### vote-info
+GET http://localhost:9002/cores/proposals/154344133701632/vote-info
+Content-Type: application/json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNTc2MDI1ODA0ODAiLCJleHAiOjE2NjMyMjc4NTIsImlhdCI6MTY2Mjk2ODY1Mn0._ekSVJl4HDpK41WUG-xFqyp6wJBDH-IgFny7fnmouZs
+
+
+### comer-data-count
+GET http://localhost:9002/account/comer/124257602580480/data-count?type=1
+Content-Type: application/json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNTc2MDI1ODA0ODAiLCJleHAiOjE2NjMyMjc4NTIsImlhdCI6MTY2Mjk2ODY1Mn0._ekSVJl4HDpK41WUG-xFqyp6wJBDH-IgFny7fnmouZs
+
+
+### delete-proposal
+DELETE http://localhost:9002/cores/proposals/154344133701632
+Content-Type: application/json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNTc2MDI1ODA0ODAiLCJleHAiOjE2NjMyMjc4NTIsImlhdCI6MTY2Mjk2ODY1Mn0._ekSVJl4HDpK41WUG-xFqyp6wJBDH-IgFny7fnmouZs
+
+### startup-bounties
+GET http://localhost:9002/cores/bounties/startup/157784381534208?page=1&limit=99
+Content-Type: application/json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNTc2MDI1ODA0ODAiLCJleHAiOjE2NjQyNDkyMDksImlhdCI6MTY2Mzk5MDAwOX0.YkBDZQISQWrA-_PvL_QwPe7uxJ17e3ekmDRDWAdRKn0
+
+### startup-data-count
+GET http://localhost:9002/cores/startups/157784381534208/data-count
+Content-Type: application/json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNTc2MDI1ODA0ODAiLCJleHAiOjE2NjQyNDkyMDksImlhdCI6MTY2Mzk5MDAwOX0.YkBDZQISQWrA-_PvL_QwPe7uxJ17e3ekmDRDWAdRKn0
+
+
+### participate-bounty
+GET http://localhost:9002/cores/bounties/comer/124611115298816/participated?limit=999&page=1
+Content-Type: application/json
+X-COMUNION-AUTHORIZATION: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21lcl91aW4iOiIxMjQyNTc2MDI1ODA0ODAiLCJleHAiOjE2NjQyNDkyMDksImlhdCI6MTY2Mzk5MDAwOX0.YkBDZQISQWrA-_PvL_QwPe7uxJ17e3ekmDRDWAdRKn0

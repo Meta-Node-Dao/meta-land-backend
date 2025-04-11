@@ -1,0 +1,11 @@
+[Unit]
+Description=Ceres backend service
+After=network.target
+[Service]
+Type=simple
+Restart=always
+User=comunion
+ExecStart=/data/ceres/main --config=/data/ceres/config.toml
+
+[Install]
+WantedBy=multi-user.target

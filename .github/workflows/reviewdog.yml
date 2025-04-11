@@ -1,0 +1,53 @@
+name: Lint
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - develop
+      - release
+      - main
+jobs:
+  golangci-lint:
+    name: runner / golangci-lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v1
+      - name: golangci-lint
+        uses: reviewdog/action-golangci-lint@v1
+        with:
+          golangci_lint_flags: "--timeout=10m --exclude-use-default=false --tests=false --enable=deadcode,govet,errcheck,gosimple,ineffassign,structcheck,staticcheck,unused,varcheck"
+          workdir: pkg
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.17
+
+      - name: Check out code
+        uses: actions/checkout@v1
+
+      - name: Run Unit tests.
+        run: go test ./
+
+      - name: Run go vet
+        run: make govet
+
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.17
+
+      - name: Check out code
+        uses: actions/checkout@v1
+
+      - name: Run Build.
+        run: make build

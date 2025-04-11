@@ -1,0 +1,58 @@
+name: Development deploy
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+      - name: Install dependencies
+        run: go mod download
+      - name: Test
+        run: make govet
+      - name: Build
+        # run: go build -installsuffix cgo -ldflags "-s" -ldflags "${GO_LDFLAGS}" -o ./main
+        run: go build -installsuffix cgo -gcflags="all=-N -l" -o ./main
+        env:
+          CGO_ENABLED: 0
+          GOOS: linux
+          GOARCH: amd64
+      - name: Deploy
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.DEV_HOST }}
+          username: ${{ secrets.DEV_USERNAME }}
+          passphrase: ${{ secrets.DEV_PASSPHRASE }}
+          key: ${{ secrets.DEV_KEY }}
+          port: ${{ secrets.DEV_PORT }}
+          source: "main"
+          target: ${{ secrets.DEV_BIN_PATH }}
+      - name: Restart server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_HOST }}
+          username: ${{ secrets.DEV_USERNAME }}
+          passphrase: ${{ secrets.DEV_PASSPHRASE }}
+          key: ${{ secrets.DEV_KEY }}
+          port: ${{ secrets.DEV_PORT }}
+          script: systemctl restart ceres
+      - name: Notification
+        uses: erguotou520/instant-access-action@0.0.4
+        if: ${{ success() }}
+        with:
+          channel: "71c28249ce744d73b2af16b7c5364e45"
+          head: "{{branchName}}部署完成"
+          body: '{{author}} commit "{{commitMessage}}" on {{repositoryName}}#{{branchName}} branch at {{commitTime}}'
+      - name: Notification
+        uses: erguotou520/instant-access-action@0.0.4
+        if: ${{ failure() }}
+        with:
+          channel: "71c28249ce744d73b2af16b7c5364e45"
+          head: "{{branchName}}部署失败"
+          body: '{{author}} commit "{{commitMessage}}" on {{repositoryName}}#{{branchName}} branch at {{commitTime}}'
