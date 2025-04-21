@@ -26,6 +26,12 @@ func Init() (err error) {
 	Gin = egin.Load("server.http").Build()
 
 	apiRoot := Gin.Group("/api")
+
+	startupsGroup := apiRoot.Group("/")
+	{
+		startupsGroup.GET("/startups", router.Wrap(startup.ListStartups))
+	}
+
 	// oauth login router
 	oauthLogin := apiRoot.Group("/account/oauth")
 	{
@@ -103,7 +109,7 @@ func Init() (err error) {
 		coresPriv.GET("/startups/existence", router.Wrap(startup.Existence))
 		coresPriv.POST("/startups", router.Wrap(startup.CreateStartup))
 		coresPriv.GET("/startups/comer/:comerID/posted", router.Wrap(startup.ListStartupsPostedByComer))
-		coresPriv.GET("/startups", router.Wrap(crowdfunding.SelectNonFundingStartups))
+		// coresPriv.GET("/startups", router.Wrap(crowdfunding.SelectNonFundingStartups))
 		//coresPriv.GET("/startups/crowdfundable", router.Wrap(crowdfunding.SelectNonFundingStartups))
 		coresPriv.POST("/startups/:startupID/follow", router.Wrap(startup.FollowStartup))
 		coresPriv.DELETE("/startups/:startupID/unfollow", router.Wrap(startup.UnfollowStartup))

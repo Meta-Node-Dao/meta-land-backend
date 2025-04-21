@@ -10,7 +10,7 @@
 [ceres.mysql]
     connMaxLifetime = 300
     debug = true
-    dsn = "root:233333Zj@tcp(154.89.148.176:3306)/comunion?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=True&loc=Local&timeout=1s&readTimeout=5s&writeTimeout=5s"
+    dsn = "metaLand:ekZinLn5xPDPjmTz@tcp(45.249.209.63:3306)/metaLand?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=True&loc=Local&timeout=1s&readTimeout=5s&writeTimeout=5s"
     level = "panic"
     maxIdleConns = 50
     maxOpenConns = 100

@@ -21,24 +21,22 @@ func GetTagList(ctx *router.Context) {
 	}
 
 	var response tag.ListResponse
-	if err := service.GetStartupTagList(request, &response); err != nil {
-		ctx.HandleError(err)
-		return
-	}
+	//if err := service.GetStartupTagList(request, &response); err != nil {
+	//	ctx.HandleError(err)
+	//	return
+	//}
 
 	ctx.OK(response)
 }
 
 func GetsStartupTagList(ctx *router.Context) {
-	var request tag.ListRequest
+	var request tag.TagListRequest
 	if err := ctx.BindQuery(&request); err != nil {
 		//err = router.ErrBadRequest.WithMsg("Invalid data format")
-		//ctx.HandleError(err)
-		//return
-
+		ctx.HandleError(err)
+		return
 	}
-	request.Limit = 10
-	request.Offset = 0
+
 	if err := request.Validate(); err != nil {
 		ctx.HandleError(err)
 		return

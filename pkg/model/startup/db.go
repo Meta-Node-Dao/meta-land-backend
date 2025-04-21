@@ -88,6 +88,34 @@ func ListStartups(db *gorm.DB, comerID uint64, input *ListStartupRequest, startu
 	return
 }
 
+// 数据库分页查询项目列表
+func GetStartupLists(db *gorm.DB, input *StartupListRequest, startups *[]Startup) (total int64, err error) {
+	db = db.Where("is_deleted = false")
+	if input.Keyword != "" {
+		db = db.Where("name like ?", "%"+input.Keyword+"%")
+	}
+	//if len(input.Tags) > 0 {
+	//	db = db.Joins("JOIN startup_tags ON startups.id = startup_tags.startup_id").
+	//		Joins("JOIN tags ON startup_tags.tag_id = tags.id").
+	//		Where("tags.name IN (?)", input.Tags).
+	//		Group("startups.id")
+	//}
+
+	if err = db.Table("startup").Count(&total).Error; err != nil {
+		return
+	}
+	if input.Page <= 0 {
+		input.Page = 1
+	}
+	if input.Size <= 0 {
+		input.Size = 10
+	}
+	offset := (input.Page - 1) * input.Size
+	db = db.Offset(offset).Limit(input.Size)
+	err = db.Find(&startups).Error
+	return
+}
+
 // CreateStartupFollowRel create comer relation for startup and comer
 func CreateStartupFollowRel(db *gorm.DB, comerID, startupID uint64) error {
 	return db.Create(&FollowRelation{ComerID: comerID, StartupID: startupID}).Error

@@ -13,7 +13,7 @@ import (
 
 // ListStartups get startup list
 func ListStartups(ctx *router.Context) {
-	var request model.ListStartupRequest
+	var request model.StartupListRequest
 	if err := ctx.ShouldBindQuery(&request); err != nil {
 		log.Warn(err)
 		err = router.ErrBadRequest.WithMsg(err.Error())
@@ -21,8 +21,8 @@ func ListStartups(ctx *router.Context) {
 		return
 	}
 
-	var response model.ListStartupsResponse
-	if err := service.ListStartups(0, &request, &response); err != nil {
+	var response model.StartupListResponse
+	if err := service.StartupLists(&request, &response); err != nil {
 		ctx.HandleError(err)
 		return
 	}

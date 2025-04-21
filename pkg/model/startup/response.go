@@ -5,6 +5,13 @@ type ListStartupsResponse struct {
 	Total int64     `json:"total"`
 }
 
+type StartupListResponse struct {
+	List  []Startup `json:"list"`
+	Total int64     `json:"total"`
+	Page  int64     `json:"page"`
+	Size  int64     `json:"size"`
+}
+
 type GetStartupResponse struct {
 	Startup
 }

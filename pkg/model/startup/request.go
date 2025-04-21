@@ -5,6 +5,13 @@ import (
 	"ceres/pkg/model/account"
 )
 
+type StartupListRequest struct {
+	Page    int      `form:"page"`
+	Size    int      `form:"size"`
+	Keyword string   `form:"keyword"`
+	Tags    []string `form:"tags"`
+}
+
 type ListStartupRequest struct {
 	model.ListRequest
 	Keyword string `form:"keyword"`

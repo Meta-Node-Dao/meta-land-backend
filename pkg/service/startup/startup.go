@@ -97,6 +97,21 @@ func CreateStartup(comerID uint64, request *model.CreateStartupRequest) (err err
 	return
 }
 
+func StartupLists(request *model.StartupListRequest, response *model.StartupListResponse) (err error) {
+	total, err := model.GetStartupLists(mysql.DB, request, &response.List)
+	if err != nil {
+		log.Warn(err)
+		return
+	}
+	if total == 0 {
+		response.List = make([]model.Startup, 0)
+		return
+	}
+	response.Total = total
+
+	return
+}
+
 // ListStartups get current comer accounts
 func ListStartups(comerID uint64, request *model.ListStartupRequest, response *model.ListStartupsResponse) (err error) {
 	total, err := model.ListStartups(mysql.DB, comerID, request, &response.List)
