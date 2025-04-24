@@ -12,6 +12,76 @@ import (
 	"time"
 )
 
+// BountyPageData ACTIVE
+type BountyPageData struct {
+	List  []BountyBasicResponse `json:"list"`
+	Page  int                   `json:"page"`
+	Size  int                   `json:"size"`
+	Total int                   `json:"total"`
+}
+
+type TagRelationResponse struct {
+	ID       int         `json:"id"`
+	Tag      TagResponse `json:"tag"`
+	TagID    int         `json:"tag_id"`
+	TargetID int         `json:"target_id"`
+	Type     int         `json:"type"`
+}
+
+type TagResponse struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+	Type int    `json:"type"`
+}
+
+type StartupBasic struct {
+	Banner        string `json:"banner"`
+	ChainId       int    `json:"chain_id"`
+	ComerId       int    `json:"comer_id"`
+	ContractAudit string `json:"contract_audit"`
+	Id            int    `json:"id"`
+	IsConnected   bool   `json:"is_connected"`
+	Kyc           string `json:"kyc"`
+	Logo          string `json:"logo"`
+	Mission       string `json:"mission"`
+	Name          string `json:"name"`
+	OnChain       bool   `json:"on_chain"`
+	TxHash        string `json:"tx_hash"`
+	Type          int    `json:"type"`
+}
+
+// BountyBasicResponse ACTIVE
+type BountyBasicResponse struct {
+	ApplicantCount              int                   `json:"applicant_count"`
+	ApplicantDeposit            int                   `json:"applicants_deposit"`
+	ApplicantMinDeposit         int                   `json:"applicant_min_deposit"`
+	ApplyDeadline               string                `json:"apply_deadline"`
+	ChainId                     int                   `json:"chain_id"`
+	ComerId                     int                   `json:"comer_id"`
+	ContractAddress             string                `json:"contract_address"`
+	CreatedAt                   string                `json:"created_at"`
+	DepositContractAddress      string                `json:"deposit_contract_address"`
+	DepositContractTokenDecimal int                   `json:"deposit_contract_token_decimal"`
+	DepositContractTokenSymbol  string                `json:"deposit_contract_token_symbol"`
+	DiscussionLink              string                `json:"discussion_link"`
+	ExpiredTime                 string                `json:"expired_time"`
+	FounderDeposit              int                   `json:"founder_deposit"`
+	Id                          int                   `json:"id"`
+	IsLock                      int                   `json:"is_lock"`
+	PaymentMode                 int                   `json:"payment_mode"`
+	Reward                      BountyReward          `json:"reward"`
+	Skills                      []TagRelationResponse `json:"skills"`
+	Startup                     StartupBasic          `json:"startup"`
+	StartupId                   int                   `json:"startup_id"`
+	Status                      int                   `json:"status"`
+	Title                       string                `json:"title"`
+	TxHash                      string                `json:"tx_hash"`
+}
+
+type MessageResponse struct {
+	Message string `json:"message"`
+}
+
 type ContractInfoResponse struct {
 	ContractAddress string
 	Status          int
@@ -78,10 +148,11 @@ type PaymentResponse struct {
 }
 
 type BountyReward struct {
-	Token1Symbol string `gorm:"column:token1_symbol" json:"token1Symbol"`
-	Token1Amount int    `gorm:"column:token1_amount" json:"token1Amount"`
-	Token2Symbol string `gorm:"column:token2_symbol" json:"token2Symbol"`
-	Token2Amount int    `gorm:"column:token2_amount" json:"token2Amount"`
+	BountyID     int    `json:"bounty_id"`
+	Token1Symbol string `gorm:"column:token1_symbol" json:"token1_symbol"`
+	Token1Amount int    `gorm:"column:token1_amount" json:"token1_amount"`
+	Token2Symbol string `gorm:"column:token2_symbol" json:"token2_symbol"`
+	Token2Amount int    `gorm:"column:token2_amount" json:"token2_amount"`
 }
 
 type StageTerm struct {

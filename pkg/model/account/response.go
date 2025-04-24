@@ -2,6 +2,11 @@ package account
 
 import "ceres/pkg/model"
 
+// JwtAuthorizationResponse ACTIVE
+type JwtAuthorizationResponse struct {
+	Token string `json:"token"`
+}
+
 type OauthLoginResponse struct {
 	ComerID    uint64 `json:"comerID"`
 	Nick       string `json:"nick"`
@@ -28,7 +33,7 @@ type ComerLoginResponse struct {
 	ComerAccounts []*OauthAccountBindingInfo `json:"comerAccounts"`
 }
 
-// WalletNonceResponse wrap the nonce for formating rule in resposne
+// WalletNonceResponse ACTIVE
 type WalletNonceResponse struct {
 	Nonce string `json:"nonce"`
 }
