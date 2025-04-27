@@ -12,6 +12,21 @@ import (
 	"gorm.io/gorm"
 )
 
+type MessageResponse struct {
+	Message string `json:"message"`
+}
+
+type PageData struct {
+	List  []interface{} `json:"list"`
+	Page  int           `json:"page"`
+	Size  int           `json:"size"`
+	Total int           `json:"total"`
+}
+
+type IsExistResponse struct {
+	IsExist bool `json:"is_exist"`
+}
+
 // Base contains common columns for all tables.
 type Base struct {
 	ID        uint64    `gorm:"primary_key;column:id" json:"id"`

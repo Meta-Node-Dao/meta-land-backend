@@ -39,7 +39,7 @@ func main() {
 		redis.Init,
 		metrics.Init,
 		utility.Init,
-		http.Init,
+		http.InitMock,
 		//s3.Init,
 		eth.Init,
 	).

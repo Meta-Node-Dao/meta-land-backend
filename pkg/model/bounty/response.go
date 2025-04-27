@@ -12,14 +12,6 @@ import (
 	"time"
 )
 
-// BountyPageData ACTIVE
-type BountyPageData struct {
-	List  []BountyBasicResponse `json:"list"`
-	Page  int                   `json:"page"`
-	Size  int                   `json:"size"`
-	Total int                   `json:"total"`
-}
-
 type TagRelationResponse struct {
 	ID       int         `json:"id"`
 	Tag      TagResponse `json:"tag"`
@@ -76,10 +68,6 @@ type BountyBasicResponse struct {
 	Status                      int                   `json:"status"`
 	Title                       string                `json:"title"`
 	TxHash                      string                `json:"tx_hash"`
-}
-
-type MessageResponse struct {
-	Message string `json:"message"`
 }
 
 type ContractInfoResponse struct {
