@@ -13,8 +13,6 @@ import (
 	"ceres/pkg/initialization/mysql"
 	"ceres/pkg/initialization/redis"
 	"ceres/pkg/initialization/utility"
-	"ceres/pkg/service/crowdfunding"
-	"ceres/pkg/service/governance"
 	"ceres/pkg/service/startup"
 
 	"github.com/gotomicro/ego"
@@ -49,10 +47,10 @@ func main() {
 	).Cron(
 		ether.Init(),
 		startup.UpdateStartupOnChain(),
-		crowdfunding.LiveCrowdfundingStatusSchedule(),
-		crowdfunding.EndedCrowdfundingStatusSchedule(),
-		governance.ActiveProposalStatusSchedule(),
-		governance.EndProposalStatusSchedule(),
+		// crowdfunding.LiveCrowdfundingStatusSchedule(),
+		// crowdfunding.EndedCrowdfundingStatusSchedule(),
+		// governance.ActiveProposalStatusSchedule(),
+		// governance.EndProposalStatusSchedule(),
 	).Serve(
 		metrics.Vernor,
 		http.Gin,
