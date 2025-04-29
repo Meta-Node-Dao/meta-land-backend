@@ -52,7 +52,6 @@ func (receiver SocialType) String() string {
 	}
 }
 
-// Comer the comer model of comunion inner account
 type Comer struct {
 	model.Base
 	Address *string `gorm:"column:address;uniqueIndex" json:"address"`
@@ -73,7 +72,6 @@ func (c Comer) AddressStr() string {
 	return ""
 }
 
-// TableName Comer table name for gorm
 func (Comer) TableName() string {
 	return "comer"
 }
@@ -89,7 +87,6 @@ type ComerAccount struct {
 	IsLinked  bool             `gorm:"column:is_linked;not null" json:"is_linked"`
 }
 
-// TableName the ComerAccount table name for gorm
 func (ComerAccount) TableName() string {
 	return "comer_account"
 }
@@ -140,7 +137,6 @@ type ComerProfile struct {
 	Educations string `gorm:"column:educations" json:"educations"`        // 教育经历
 }
 
-// TableName the Profile table name for gorm
 func (ComerProfile) TableName() string {
 	return "comer_profile"
 }
@@ -151,7 +147,6 @@ type FollowRelation struct {
 	TargetComerID uint64 `gorm:"target_comer_id" json:"targetComerID"`
 }
 
-// TableName Followed table name for gorm
 func (FollowRelation) TableName() string {
 	return "comer_follow_rel"
 }

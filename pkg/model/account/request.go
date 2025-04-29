@@ -84,6 +84,7 @@ type UpdateSkillsRequest struct {
 type UpdateBioRequest struct {
 	Bio string `json:"bio"`
 }
+
 type LanguageInfos []LanguageInfo
 
 // UpdateLanguageInfosRequest create/update/delete
