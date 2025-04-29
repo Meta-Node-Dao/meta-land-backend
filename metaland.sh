@@ -2,12 +2,13 @@
 
 case "${1}" in
     stop)
-        kill -9 `ps -ef|grep metaland.sh|grep -v "grep"|awk '{print $2}'`
+        [ "$2" -eq 1 ] && pkill -f metaland.sh
+        [ "$2" -eq 2 ] && ps -ef|grep "hack/config/"|grep -v "grep"|awk '{print $2}'|xargs kill -9
         ;;
     start)
         while true
         do
-           ./hack/run start
+          ./hack/run start
         done
         ;;
     *)
