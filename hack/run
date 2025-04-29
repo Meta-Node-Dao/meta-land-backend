@@ -30,7 +30,7 @@ function start(){
             EGO_DEBUG=true go run main.go --config=./hack/config/config.test.toml
             ;;
         pro)
-            EGO_DEBUG=true go run main.go --config=./hack/config/config.toml
+            EGO_DEBUG=false go run main.go --config=./hack/config/config.toml
             ;;
     esac
 }

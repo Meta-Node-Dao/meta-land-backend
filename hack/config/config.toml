@@ -1,84 +1,87 @@
 # Template for comunion developer 
 
 [server.http]
-    port = 9101
+port = 9101
+
 [server.grpc]
-    port = 9102
+port = 9102
+
 [server.governor]
-    port = 9103
+port = 9103
 
 [ceres.mysql]
-    connMaxLifetime = 300
-    debug = true
-    dsn = ""
-    level = "panic"
-    maxIdleConns = 50
-    maxOpenConns = 100
+connMaxLifetime = 300
+debug = true
+dsn = ""
+level = "panic"
+maxIdleConns = 50
+maxOpenConns = 100
+
 [ceres.redis]
-    debug = true
-    mode = "stub"
-    addr = "127.0.0.1:6379"
+debug = true
+mode = "stub"
+addr = "127.0.0.1:6379"
 
 [ceres.minio]
-    accessKey = ""
-    secretKey = ""
-    endpoint = ""
-    bucket = ""
+accessKey = ""
+secretKey = ""
+endpoint = ""
+bucket = ""
 
 [ceres.logger]
-    debug = true
-    level = "debug"
+debug = true
+level = "debug"
 
 [ceres.oauth.github]
-    clientID = ""
-    clientSecret = ""
-    callbackURL = ""
+clientID = ""
+clientSecret = ""
+callbackURL = ""
 
 [ceres.oauth.google]
-    clientID = ""
-    clientSecret = ""
-    callbackURL = ""
+clientID = ""
+clientSecret = ""
+callbackURL = ""
     
 [ceres.oauth.facebook]
-    clientID = ""
-    clientSecret = ""
-    callbackURL = ""
+clientID = ""
+clientSecret = ""
+callbackURL = ""
 
 [ceres.sequence]
-    epoch = 1626023857
+epoch = 1626023857
 
 [ceres.jwt]
-    # expired in 72 hours
-    expired = 259200
-    secret = "Comunion-Ceres"
+# expired in 72 hours
+expired = 259200
+secret = "Comunion-Ceres"
 
 [ceres.eth]
-    epoch = 0
-    #endPoint = "wss://goerli.infura.io/ws/v3"
-    endPoint = "wss://api.avax-test.network/ext/bc/C/ws"
-    #infuraKey = "b55f1af18d6e438e96ed174494a223a8"
-    startupContractAddress = "0x447336D5e7E594DB2f8C72FF54aF34557d2Da752"
-    wssEndPoint = "wss://api.avax-test.network/ext/bc/C/ws"
-    rpcEndPoint = "https://api.avax-test.network/ext/bc/C/rpc"
+epoch = 0
+#endPoint = "wss://goerli.infura.io/ws/v3"
+endPoint = "wss://api.avax-test.network/ext/bc/C/ws"
+#infuraKey = "b55f1af18d6e438e96ed174494a223a8"
+startupContractAddress = "0x447336D5e7E594DB2f8C72FF54aF34557d2Da752"
+wssEndPoint = "wss://api.avax-test.network/ext/bc/C/ws"
+rpcEndPoint = "https://api.avax-test.network/ext/bc/C/rpc"
 
 [ceres.aws]
-    accessKey = ""
-    accessSecret = ""
-    endPoint = ""
-    bucket = ""
-    region = ""
-    maxSize = 1024000
+accessKey = ""
+accessSecret = ""
+endPoint = ""
+bucket = ""
+region = ""
+maxSize = 1024000
 
 [ceres.startup.cron]
-    enableDistributedTask = false
-    enableImmediatelyRun = false
-    enableSeconds = false
-    spec = "*/3 * * * *"
-    delayExecType = "skip"
+enableDistributedTask = false
+enableImmediatelyRun = false
+enableSeconds = false
+spec = "*/3 * * * *"
+delayExecType = "skip"
 
 [ceres.cron]
-    enableDistributedTask = false
-    enableImmediatelyRun = false
-    enableSeconds = false
-    spec = "*/3 * * * *"
-    delayExecType = "skip"
+enableDistributedTask = false
+enableImmediatelyRun = false
+enableSeconds = false
+spec = "*/3 * * * *"
+delayExecType = "skip"
