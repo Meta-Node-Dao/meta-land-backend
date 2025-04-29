@@ -44,45 +44,45 @@ type SaleLaunchpadBasicResponse struct {
 }
 
 type SaleLaunchpadResponse struct {
-	ChainId              int                  `json:"chain_id"`
-	ComerId              int                  `json:"comer_id"`
-	ContractAddress      string               `json:"contract_address"`
-	Cycle                int                  `json:"cycle"`
-	CycleRelease         int                  `json:"cycle_release"`
-	Description          string               `json:"description"`
-	Detail               string               `json:"detail"`
-	DexInitPrice         int                  `json:"dex_init_price"`
-	DexPairAddress       string               `json:"dex_pair_address"`
-	DexRouter            string               `json:"dex_router"`
-	EndedAt              int                  `json:"ended_at"`
-	FirstRelease         int                  `json:"first_release"`
-	HardCap              int                  `json:"hard_cap"`
-	Id                   int                  `json:"id"`
-	InvestTokenBalance   int                  `json:"invest_token_balance"`
-	InvestTokenContract  string               `json:"invest_token_contract"`
-	InvestTokenDecimals  int                  `json:"invest_token_decimals"`
-	InvestTokenName      string               `json:"invest_token_name"`
-	InvestTokenSupply    int                  `json:"invest_token_supply"`
-	InvestTokenSymbol    string               `json:"invest_token_symbol"`
-	Investor             CrowdfundingInvestor `json:"investor"`
-	Investors            int                  `json:"investors"`
-	LiquidityRate        int                  `json:"liquidity_rate"`
-	MaxInvestAmount      int                  `json:"max_invest_amount"`
-	MinInvestAmount      int                  `json:"min_invest_amount"`
-	Poster               string               `json:"poster"`
-	PresalePrice         int                  `json:"presale_price"`
-	PresaleTokenBalance  int                  `json:"presale_token_balance"`
-	PresaleTokenContract string               `json:"presale_token_contract"`
-	PresaleTokenDecimals int                  `json:"presale_token_decimals"`
-	PresaleTokenDeposit  int                  `json:"presale_token_deposit"`
-	PresaleTokenName     string               `json:"presale_token_name"`
-	PresaleTokenSupply   int                  `json:"presale_token_supply"`
-	PresaleTokenSymbol   string               `json:"presale_token_symbol"`
-	SoftCap              int                  `json:"soft_cap"`
-	StartedAt            int                  `json:"started_at"`
-	Startup              StartupCardResponse  `json:"startup"`
-	StartupId            int                  `json:"startup_id"`
-	Status               int                  `json:"status"`
+	ChainId              int                          `json:"chain_id"`
+	ComerId              int                          `json:"comer_id"`
+	ContractAddress      string                       `json:"contract_address"`
+	Cycle                int                          `json:"cycle"`
+	CycleRelease         int                          `json:"cycle_release"`
+	Description          string                       `json:"description"`
+	Detail               string                       `json:"detail"`
+	DexInitPrice         int                          `json:"dex_init_price"`
+	DexPairAddress       string                       `json:"dex_pair_address"`
+	DexRouter            string                       `json:"dex_router"`
+	EndedAt              int                          `json:"ended_at"`
+	FirstRelease         int                          `json:"first_release"`
+	HardCap              int                          `json:"hard_cap"`
+	Id                   int                          `json:"id"`
+	InvestTokenBalance   int                          `json:"invest_token_balance"`
+	InvestTokenContract  string                       `json:"invest_token_contract"`
+	InvestTokenDecimals  int                          `json:"invest_token_decimals"`
+	InvestTokenName      string                       `json:"invest_token_name"`
+	InvestTokenSupply    int                          `json:"invest_token_supply"`
+	InvestTokenSymbol    string                       `json:"invest_token_symbol"`
+	Investor             CrowdfundingInvestorResponse `json:"investor"`
+	Investors            int                          `json:"investors"`
+	LiquidityRate        int                          `json:"liquidity_rate"`
+	MaxInvestAmount      int                          `json:"max_invest_amount"`
+	MinInvestAmount      int                          `json:"min_invest_amount"`
+	Poster               string                       `json:"poster"`
+	PresalePrice         int                          `json:"presale_price"`
+	PresaleTokenBalance  int                          `json:"presale_token_balance"`
+	PresaleTokenContract string                       `json:"presale_token_contract"`
+	PresaleTokenDecimals int                          `json:"presale_token_decimals"`
+	PresaleTokenDeposit  int                          `json:"presale_token_deposit"`
+	PresaleTokenName     string                       `json:"presale_token_name"`
+	PresaleTokenSupply   int                          `json:"presale_token_supply"`
+	PresaleTokenSymbol   string                       `json:"presale_token_symbol"`
+	SoftCap              int                          `json:"soft_cap"`
+	StartedAt            int                          `json:"started_at"`
+	Startup              StartupCardResponse          `json:"startup"`
+	StartupId            int                          `json:"startup_id"`
+	Status               int                          `json:"status"`
 	Swaps                []SaleLaunchpadHistoryResponse
 	TeamWallet           string `json:"team_wallet"`
 	Title                string `json:"title"`
@@ -90,7 +90,7 @@ type SaleLaunchpadResponse struct {
 	Youtube              string `json:"youtube"`
 }
 
-type CrowdfundingInvestor struct {
+type CrowdfundingInvestorResponse struct {
 	BuyTokenBalance  int `json:"buy_token_balance"`
 	BuyTokenTotal    int `json:"buy_token_total"`
 	ComerId          int `json:"comer_id"`

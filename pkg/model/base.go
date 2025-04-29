@@ -42,9 +42,9 @@ func (base *Base) BeforeCreate(tx *gorm.DB) (err error) {
 
 // RelationBase contains common columns for all tables.
 type RelationBase struct {
-	ID        uint64    `gorm:"primary_key;column:id" json:"id"`
-	CreatedAt time.Time `gorm:"created_at" json:"createdAt"`
-	UpdatedAt time.Time `gorm:"updated_at" json:"updatedAt"`
+	ID        uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime" json:"created_at"`
+	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime" json:"updated_at"`
 }
 
 func (base *RelationBase) BeforeCreate(tx *gorm.DB) (err error) {
