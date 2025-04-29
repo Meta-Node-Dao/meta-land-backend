@@ -12,7 +12,7 @@ port = 9103
 [ceres.mysql]
 connMaxLifetime = 300
 debug = true
-dsn = "metaLand:ekZinLn5xPDPjmTz@tcp(45.249.209.63:3306)/metaLand?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=True&loc=Local&timeout=1s&readTimeout=5s&writeTimeout=5s"
+dsn = ""
 level = "panic"
 maxIdleConns = 50
 maxOpenConns = 100
