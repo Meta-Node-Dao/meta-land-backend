@@ -29,7 +29,7 @@ type IsExistResponse struct {
 
 // Base contains common columns for all tables.
 type Base struct {
-	ID        uint64    `gorm:"primary_key;column:id" json:"id"`
+	ID        uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
 	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime" json:"created_at"`
 	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime" json:"updated_at"`
 	IsDeleted bool      `gorm:"column:is_deleted;default:false" json:"is_deleted"`
