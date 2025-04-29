@@ -37,8 +37,8 @@ func CreateCrowdfunding(request crowdfunding.CreateCrowdfundingRequest) error {
 		ChainInfo:    request.ChainInfo,
 		SellInfo:     request.SellInfo,
 		BuyInfo:      request.BuyInfo,
-		StartupId:    request.StartupId,
-		ComerId:      request.ComerId,
+		StartupID:    request.StartupId,
+		ComerID:      request.ComerId,
 		RaiseGoal:    request.RaiseGoal,
 		RaiseBalance: decimal.Zero,
 		TeamWallet:   request.TeamWallet,
@@ -90,14 +90,14 @@ func GetCrowdfundingList(pagination *crowdfunding.PublicCrowdfundingListPageRequ
 		for _, c := range pagination.Rows.([]crowdfunding.Crowdfunding) {
 			fmt.Println("==================", c.BuyTokenSymbol, c.SellTokenSymbol)
 			var st startup.Startup
-			if err = startup.GetStartup(mysql.DB, c.StartupId, &st); err != nil {
+			if err = startup.GetStartup(mysql.DB, c.StartupID, &st); err != nil {
 				return
 			}
 			items = append(items, crowdfunding.PublicItem{
 				CrowdfundingId:       c.ID,
 				CrowdfundingContract: c.CrowdfundingContract,
-				StartupId:            c.StartupId,
-				ComerId:              c.ComerId,
+				StartupId:            c.StartupID,
+				ComerId:              c.ComerID,
 				StartupName:          st.Name,
 				StartTime:            c.StartTime,
 				EndTime:              c.EndTime,
@@ -147,8 +147,8 @@ func GetCrowdfundingDetail(crowdfundingId uint64) (detail crowdfunding.Detail, e
 		RaiseBalance:         entity.RaiseBalance,
 		RaiseGoal:            entity.RaiseGoal,
 		RaisedPercent:        entity.RaiseBalance.Div(entity.RaiseGoal),
-		StartupId:            entity.StartupId,
-		ComerId:              entity.ComerId,
+		StartupId:            entity.StartupID,
+		ComerId:              entity.ComerID,
 		StartTime:            entity.StartTime,
 		EndTime:              entity.EndTime,
 		Poster:               entity.Poster,
@@ -169,14 +169,14 @@ func GetPostedCrowdfundingListByComer(comerId uint64, pagination *model.Paginati
 	if pagination.Rows != nil {
 		for _, c := range pagination.Rows.([]crowdfunding.Crowdfunding) {
 			var st startup.Startup
-			if err = startup.GetStartup(mysql.DB, c.StartupId, &st); err != nil {
+			if err = startup.GetStartup(mysql.DB, c.StartupID, &st); err != nil {
 				return err
 			}
 			items = append(items, crowdfunding.PublicItem{
 				CrowdfundingId:       c.ID,
 				CrowdfundingContract: c.CrowdfundingContract,
-				StartupId:            c.StartupId,
-				ComerId:              c.ComerId,
+				StartupId:            c.StartupID,
+				ComerId:              c.ComerID,
 				StartupName:          st.Name,
 				StartupLogo:          st.Logo,
 				StartTime:            c.StartTime,
@@ -212,7 +212,7 @@ func GetParticipatedCrowdFundingListOfComer(comerId uint64, pagination *model.Pa
 	if pagination.Rows != nil {
 		for _, c := range pagination.Rows.([]crowdfunding.Crowdfunding) {
 			var st startup.Startup
-			if err = startup.GetStartup(mysql.DB, c.StartupId, &st); err != nil {
+			if err = startup.GetStartup(mysql.DB, c.StartupID, &st); err != nil {
 				return err
 			}
 			investor, err := crowdfunding.SelectInvestorByCrowdfundingIdAndComerId(mysql.DB, c.ID, comerId)
@@ -222,8 +222,8 @@ func GetParticipatedCrowdFundingListOfComer(comerId uint64, pagination *model.Pa
 			items = append(items, crowdfunding.PublicItem{
 				CrowdfundingId:       c.ID,
 				CrowdfundingContract: c.CrowdfundingContract,
-				StartupId:            c.StartupId,
-				ComerId:              c.ComerId,
+				StartupId:            c.StartupID,
+				ComerId:              c.ComerID,
 				StartupName:          st.Name,
 				StartupLogo:          st.Logo,
 				StartTime:            c.StartTime,
@@ -254,7 +254,7 @@ func CancelCrowdfunding(comerId, crowdfundingId uint64, txHash string) (err erro
 	if err != nil {
 		return err
 	}
-	if entity.ComerId != comerId {
+	if entity.ComerID != comerId {
 		return router.ErrBadRequest.WithMsg("current comer is not funder of the crowdfunding")
 	}
 	if entity.Status != crowdfunding.Upcoming && entity.Status != crowdfunding.Pending {
@@ -275,7 +275,7 @@ func FinalizeCrowdFunding(comerId, crowdfundingId uint64, txHash string) (err er
 	if err != nil {
 		return err
 	}
-	if entity.ComerId != comerId {
+	if entity.ComerID != comerId {
 		return router.ErrBadRequest.WithMsg("current comer is not funder of the crowdfunding")
 	}
 	if entity.Status == crowdfunding.Ended || entity.RaiseBalance.Equal(entity.RaiseGoal) {
@@ -331,8 +331,8 @@ func Invest(comerId, crowdfundingId uint64, request crowdfunding.InvestRequest) 
 	var swap = &crowdfunding.CrowdfundingSwap{
 		ChainInfo:       crowdfunding.ChainInfo{ChainId: entity.ChainId, TxHash: request.TxHash},
 		Status:          crowdfunding.SwapPending,
-		CrowdfundingId:  entity.ID,
-		ComerId:         comerId,
+		CrowdfundingID:  entity.ID,
+		ComerID:         comerId,
 		Access:          request.Access,
 		Timestamp:       time.Now(),
 		BuyTokenSymbol:  request.BuyTokenSymbol,
@@ -392,7 +392,7 @@ func HandleOnChainStateForInvestment(onChainStatus int, swap crowdfunding.Crowdf
 				log.Errorf("##### UpdateCrowdfundingSwapStatus: %s, %d, %v\n", txHash, sourceID, err)
 				return err
 			}
-			investor, err := crowdfunding.FirstOrCreateInvestor(tx, swap.CrowdfundingId, swap.ComerId)
+			investor, err := crowdfunding.FirstOrCreateInvestor(tx, swap.CrowdfundingID, swap.ComerID)
 			if err != nil {
 				log.Errorf("##### FirstOrCreateInvestor: %s, %d, %v\n", txHash, sourceID, err)
 				return err
@@ -428,7 +428,7 @@ func ModifyCrowdfunding(comerId, crowdfundingId uint64, request crowdfunding.Mod
 	if err != nil {
 		return err
 	}
-	if entity.ComerId != comerId {
+	if entity.ComerID != comerId {
 		return router.ErrBadRequest.WithMsg("current comer is not funder of the crowdfunding")
 	}
 	if entity.Status != crowdfunding.Live && entity.Status != crowdfunding.Upcoming {
@@ -467,7 +467,7 @@ func GetBuyPriceAndSwapModificationHistories(comerId, crowdfundingId uint64, pag
 	if err != nil {
 		return
 	}
-	if entity.ComerId != comerId {
+	if entity.ComerID != comerId {
 		err = router.ErrBadRequest.WithMsg("current comer is not funder of the crowdfunding")
 		return
 	}
@@ -484,7 +484,7 @@ func GetCrowdfundingSwapRecords(crowdfundingId uint64, pagination *model.Paginat
 
 	for _, swap := range pagination.Rows.([]crowdfunding.CrowdfundingSwap) {
 		var profile account.ComerProfile
-		comerId := swap.ComerId
+		comerId := swap.ComerID
 		if err = account.GetComerProfile(mysql.DB, comerId, &profile); err != nil {
 			return
 		}
@@ -492,7 +492,7 @@ func GetCrowdfundingSwapRecords(crowdfundingId uint64, pagination *model.Paginat
 			ComerName:      profile.Name,
 			ComerAvatar:    profile.Avatar,
 			ComerId:        comerId,
-			CrowdfundingId: swap.CrowdfundingId,
+			CrowdfundingId: swap.CrowdfundingID,
 			Access:         swap.Access,
 			InvestAmount:   swap.BuyTokenAmount,
 			Time:           swap.Timestamp,
@@ -520,8 +520,8 @@ func GetCrowdfundingListByStartup(startupId uint64) (list []crowdfunding.PublicI
 			list = append(list, crowdfunding.PublicItem{
 				CrowdfundingId:       c.ID,
 				CrowdfundingContract: c.CrowdfundingContract,
-				StartupId:            c.StartupId,
-				ComerId:              c.ComerId,
+				StartupId:            c.StartupID,
+				ComerId:              c.ComerID,
 				StartupName:          st.Name,
 				StartupLogo:          st.Logo,
 				StartTime:            c.StartTime,

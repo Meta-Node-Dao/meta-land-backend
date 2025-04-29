@@ -48,7 +48,7 @@ type BountyApplicant struct {
 	ApproveAt   time.Time `gorm:"column:approve_at" json:"approve_at"`                // 批准时间
 	QuitAt      time.Time `gorm:"column:quit_at" json:"quit_at"`                      // 退出时间
 	SubmitAt    time.Time `gorm:"column:submit_at" json:"submit_at"`                  // 提交时间
-	Status      int8      `gorm:"column:status;index:idx_status" json:"status"`       // 申请状态
+	Status      int       `gorm:"column:status;index:idx_status" json:"status"`       // 申请状态
 	Description string    `gorm:"column:description" json:"description"`              // 申请描述
 }
 

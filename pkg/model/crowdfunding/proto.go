@@ -25,20 +25,20 @@ type Crowdfunding struct {
 	ChainInfo
 	SellInfo
 	BuyInfo
-	CrowdfundingContract string          `gorm:"column:crowdfunding_contract" json:"crowdfunding_contract"`     // 众筹合约地址
-	StartupID            uint64          `gorm:"column:startup_id" json:"startup_id"`                           // 初创公司ID
-	ComerID              uint64          `gorm:"column:comer_id" json:"comer_id"`                               // 创始人ID
-	RaiseGoal            decimal.Decimal `gorm:"column:raise_goal;type:decimal(38,18)" json:"raise_goal"`       // 募资目标
-	RaiseBalance         decimal.Decimal `gorm:"column:raise_balance;type:decimal(38,18)" json:"raise_balance"` // 已募资金额
-	TeamWallet           string          `gorm:"column:team_wallet" json:"team_wallet"`                         // 团队钱包地址
-	SwapPercent          decimal.Decimal `gorm:"column:swap_percent" json:"swap_percent"`                       // 兑换百分比
-	StartTime            time.Time       `gorm:"column:start_time" json:"start_time"`                           // 开始时间
-	EndTime              time.Time       `gorm:"column:end_time" json:"end_time"`                               // 结束时间
-	Poster               string          `gorm:"column:poster" json:"poster"`                                   // 海报URL
-	Youtube              string          `gorm:"column:youtube" json:"youtube"`                                 // YouTube链接
-	Detail               string          `gorm:"column:detail" json:"detail"`                                   // 详情URL
-	Description          string          `gorm:"column:description" json:"description"`                         // 项目描述
-	Status               int8            `gorm:"column:status;default:0" json:"status"`                         // 状态: 0-待定 1-即将开始 2-进行中 3-已结束 4-已取消 5-失败
+	CrowdfundingContract string             `gorm:"column:crowdfunding_contract" json:"crowdfunding_contract"`     // 众筹合约地址
+	StartupID            uint64             `gorm:"column:startup_id" json:"startup_id"`                           // 初创公司ID
+	ComerID              uint64             `gorm:"column:comer_id" json:"comer_id"`                               // 创始人ID
+	RaiseGoal            decimal.Decimal    `gorm:"column:raise_goal;type:decimal(38,18)" json:"raise_goal"`       // 募资目标
+	RaiseBalance         decimal.Decimal    `gorm:"column:raise_balance;type:decimal(38,18)" json:"raise_balance"` // 已募资金额
+	TeamWallet           string             `gorm:"column:team_wallet" json:"team_wallet"`                         // 团队钱包地址
+	SwapPercent          decimal.Decimal    `gorm:"column:swap_percent" json:"swap_percent"`                       // 兑换百分比
+	StartTime            time.Time          `gorm:"column:start_time" json:"start_time"`                           // 开始时间
+	EndTime              time.Time          `gorm:"column:end_time" json:"end_time"`                               // 结束时间
+	Poster               string             `gorm:"column:poster" json:"poster"`                                   // 海报URL
+	Youtube              string             `gorm:"column:youtube" json:"youtube"`                                 // YouTube链接
+	Detail               string             `gorm:"column:detail" json:"detail"`                                   // 详情URL
+	Description          string             `gorm:"column:description" json:"description"`                         // 项目描述
+	Status               CrowdfundingStatus `gorm:"column:status;default:0" json:"status"`                         // 状态: 0-待定 1-即将开始 2-进行中 3-已结束 4-已取消 5-失败
 }
 
 func (c Crowdfunding) Json() string {
@@ -118,16 +118,16 @@ func (CrowdfundingInvestor) TableName() string {
 type CrowdfundingSwap struct {
 	model.RelationBase
 	ChainInfo
-	Timestamp       *time.Time      `gorm:"column:timestamp" json:"timestamp"`                                     // 交易时间戳
-	Status          int8            `gorm:"column:status;default:0" json:"status"`                                 // 状态:0-待处理 1-成功 2-失败
-	CrowdfundingID  uint64          `gorm:"column:crowdfunding_id" json:"crowdfunding_id"`                         // 众筹项目ID
-	ComerID         uint64          `gorm:"column:comer_id" json:"comer_id"`                                       // 用户ID
-	Access          int8            `gorm:"column:access" json:"access"`                                           // 操作类型:1-投资 2-赎回
-	BuyTokenSymbol  string          `gorm:"column:buy_token_symbol" json:"buy_token_symbol"`                       // 买入代币符号
-	BuyTokenAmount  decimal.Decimal `gorm:"column:buy_token_amount;type:decimal(38,18)" json:"buy_token_amount"`   // 买入代币数量
-	SellTokenSymbol string          `gorm:"column:sell_token_symbol" json:"sell_token_symbol"`                     // 卖出代币符号
-	SellTokenAmount decimal.Decimal `gorm:"column:sell_token_amount;type:decimal(38,18)" json:"sell_token_amount"` // 卖出代币数量
-	Price           decimal.Decimal `gorm:"column:price;type:decimal(38,18)" json:"price"`                         // 兑换价格
+	Timestamp       time.Time              `gorm:"column:timestamp" json:"timestamp"`                                     // 交易时间戳
+	Status          CrowdfundingSwapStatus `gorm:"column:status;default:0" json:"status"`                                 // 状态:0-待处理 1-成功 2-失败
+	CrowdfundingID  uint64                 `gorm:"column:crowdfunding_id" json:"crowdfunding_id"`                         // 众筹项目ID
+	ComerID         uint64                 `gorm:"column:comer_id" json:"comer_id"`                                       // 用户ID
+	Access          SwapAccess             `gorm:"column:access" json:"access"`                                           // 操作类型:1-投资 2-赎回
+	BuyTokenSymbol  string                 `gorm:"column:buy_token_symbol" json:"buy_token_symbol"`                       // 买入代币符号
+	BuyTokenAmount  decimal.Decimal        `gorm:"column:buy_token_amount;type:decimal(38,18)" json:"buy_token_amount"`   // 买入代币数量
+	SellTokenSymbol string                 `gorm:"column:sell_token_symbol" json:"sell_token_symbol"`                     // 卖出代币符号
+	SellTokenAmount decimal.Decimal        `gorm:"column:sell_token_amount;type:decimal(38,18)" json:"sell_token_amount"` // 卖出代币数量
+	Price           decimal.Decimal        `gorm:"column:price;type:decimal(38,18)" json:"price"`                         // 兑换价格
 }
 
 // TableName 指定表名

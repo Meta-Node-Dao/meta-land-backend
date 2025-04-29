@@ -80,7 +80,7 @@ func CreateComerProfile(comerID uint64, post *model.CreateProfileRequest) (err e
 		Medium:   post.Medium,
 		Facebook: post.Facebook,
 		Linktree: post.Linktree,
-		BIO:      post.BIO,
+		Bio:      post.BIO,
 	}
 	err = mysql.DB.Transaction(func(tx *gorm.DB) (er error) {
 		//create skill
@@ -146,7 +146,7 @@ func UpdateComerProfile(comerID uint64, post *model.UpdateProfileRequest) (err e
 		Medium:   post.Medium,
 		Facebook: post.Facebook,
 		Linktree: post.Linktree,
-		BIO:      post.BIO,
+		Bio:      post.BIO,
 	}
 	err = mysql.DB.Transaction(func(tx *gorm.DB) (er error) { //create skill
 		if er = processSkills(tx, comerID, post.SKills); er != nil {

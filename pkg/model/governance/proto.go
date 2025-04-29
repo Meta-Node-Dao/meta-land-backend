@@ -112,7 +112,7 @@ type GovernanceProposal struct {
 	VoteSystem          string    `gorm:"column:vote_system" json:"vote_system"`                     // 投票系统
 	StartTime           time.Time `gorm:"column:start_time" json:"start_time"`                       // 开始时间
 	EndTime             time.Time `gorm:"column:end_time" json:"end_time"`                           // 结束时间
-	Status              int8      `gorm:"column:status" json:"status"`                               // 状态:0-待定 1-即将开始 2-活跃 3-已结束
+	Status              int       `gorm:"column:status" json:"status"`                               // 状态:0-待定 1-即将开始 2-活跃 3-已结束
 }
 
 // TableName 指定表名

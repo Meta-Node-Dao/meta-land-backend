@@ -210,7 +210,7 @@ func bindOauth(oauth auth.OauthAccount, oauthType model.ComerAccountType, logonC
 		comerNotLinkedThisTypeOauth = true
 	} else {
 		for _, linkedAccount := range linkedAccounts {
-			if linkedAccount.Type == int(oauthType) {
+			if linkedAccount.Type == oauthType {
 				comerNotLinkedThisTypeOauth = false
 				break
 			}
@@ -252,7 +252,7 @@ func bindOauth(oauth auth.OauthAccount, oauthType model.ComerAccountType, logonC
 				IsPrimary: true,
 				Nick:      oauth.GetUserNick(),
 				Avatar:    oauth.GetUserAvatar(),
-				Type:      int(oauthType),
+				Type:      oauthType,
 				IsLinked:  comerHasAddress,
 			}
 			if err = model.CreateAccount(mysql.DB, &crtComerAccount); err != nil {
@@ -317,7 +317,7 @@ func justLoginWithOauth(oauth auth.OauthAccount, oauthType model.ComerAccountTyp
 				IsPrimary: true,
 				Nick:      oauth.GetUserNick(),
 				Avatar:    oauth.GetUserAvatar(),
-				Type:      int(oauthType),
+				Type:      oauthType,
 				IsLinked:  true,
 			}
 			if erro = account.CreateAccount(mysql.DB, &comerAccount); erro != nil {

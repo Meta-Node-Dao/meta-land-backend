@@ -32,7 +32,7 @@ func VoteProposal(comerId, proposalId uint64, request governance.VoteRequest) er
 	if proposal.ID == 0 {
 		return fmt.Errorf("proposal %d does not exist", proposalId)
 	}
-	if proposal.Status != int8(governance.ProposalActive) {
+	if proposal.Status != int(governance.ProposalActive) {
 		return errors.New("invalid proposal status")
 	}
 

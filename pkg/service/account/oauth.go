@@ -39,7 +39,7 @@ func LoginWithOauth(client auth.OauthClient, oauthType account.ComerAccountType,
 			}
 			comerAccount = account.ComerAccount{
 				ComerID:   comer.ID,
-				OIN:       oauth.GetUserID(),
+				Oin:       oauth.GetUserID(),
 				IsPrimary: true,
 				Nick:      oauth.GetUserNick(),
 				Avatar:    oauth.GetUserAvatar(),
@@ -106,7 +106,7 @@ func LinkOauthAccountToComer(comerID uint64, client auth.OauthClient, oauthType 
 	if comerAccount.ID == 0 {
 		comerAccount = account.ComerAccount{
 			ComerID:   comerID,
-			OIN:       oauth.GetUserID(),
+			Oin:       oauth.GetUserID(),
 			IsPrimary: true,
 			Nick:      oauth.GetUserNick(),
 			Avatar:    oauth.GetUserAvatar(),

@@ -2,15 +2,15 @@ package tag
 
 import (
 	"ceres/pkg/initialization/mysql"
-	model "ceres/pkg/model/chain"
+	"ceres/pkg/model/chain"
 
 	"github.com/qiniu/x/log"
 )
 
 // GetChainList return the all chain list
-func GetChainList(response *model.ListResponse) (err error) {
-	chainList := make([]model.Chain, 0)
-	err = model.GetChainList(mysql.DB, &chainList)
+func GetChainList(response *chain.ChainListResponse) (err error) {
+	chainList := make([]chain.ChainBasicResponse, 0)
+	err = chain.GetChainList(mysql.DB, &chainList)
 	if err != nil {
 		log.Warn(err)
 		return
@@ -19,10 +19,9 @@ func GetChainList(response *model.ListResponse) (err error) {
 	return
 }
 
-// GetChainList return the all chain list
-func GetChainCompleteList(response *model.ListResponse) (err error) {
-	chainList := make([]model.Chain, 0)
-	err = model.GetChainCompleteList(mysql.DB, &chainList)
+func GetChainCompleteList(response *chain.ChainListResponse) (err error) {
+	chainList := make([]chain.ChainBasicResponse, 0)
+	err = chain.GetChainCompleteList(mysql.DB, &chainList)
 	if err != nil {
 		log.Warn(err)
 		return

@@ -37,7 +37,7 @@ func EndProposalStatusSchedule() ecron.Ecron {
 
 		if len(list) > 0 {
 			for _, c := range list {
-				setting, err := GetStartupGovernanceSetting(c.StartupId)
+				setting, err := GetStartupGovernanceSetting(c.StartupID)
 				if err != nil {
 					return err
 				}

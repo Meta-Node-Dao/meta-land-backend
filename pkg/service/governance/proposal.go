@@ -5,7 +5,7 @@ import (
 	"ceres/pkg/model"
 	"ceres/pkg/model/account"
 	"ceres/pkg/model/dict"
-	governanceModel "ceres/pkg/model/governance"
+	"ceres/pkg/model/governance"
 	"errors"
 	"fmt"
 	"github.com/qiniu/x/log"
@@ -13,43 +13,43 @@ import (
 	"gorm.io/gorm"
 )
 
-func CreateProposal(comerId uint64, request *governanceModel.CreateProposalRequest) error {
-	if comerId != request.AuthorComerId {
+func CreateProposal(comerId uint64, request *governance.CreateProposalRequest) error {
+	if comerId != request.AuthorComerID {
 		return errors.New("invalid comerId")
 	}
 	if err := request.Valid(); err != nil {
 		return err
 	}
-	request.Status = governanceModel.ProposalUpcoming
-	proposalModel := governanceModel.GovernanceProposalModel{
-		GovernanceProposalInfo: request.GovernanceProposalInfo,
+	request.Status = int(governance.ProposalUpcoming)
+	proposalModel := governance.GovernanceProposal{
+		//GovernanceProposal: request.GovernanceProposal,
 	}
 	if len(request.Choices) == 0 {
 		return errors.New("choices cannot be empty")
 	}
 	return mysql.DB.Transaction(func(tx *gorm.DB) error {
-		if err := governanceModel.CreateProposal(mysql.DB, &proposalModel); err != nil {
+		if err := governance.CreateProposal(mysql.DB, &proposalModel); err != nil {
 			return err
 		}
-		var choices []*governanceModel.GovernanceChoice
+		var choices []*governance.GovernanceChoice
 		for _, choice := range request.Choices {
-			choices = append(choices, &governanceModel.GovernanceChoice{
-				ProposalChoice: governanceModel.ProposalChoice{
-					ProposalId: proposalModel.ID,
+			choices = append(choices, &governance.GovernanceChoice{
+				ProposalChoice: governance.ProposalChoice{
+					ProposalID: proposalModel.ID,
 					ItemName:   choice.ItemName,
 					SeqNum:     choice.SeqNum,
 				},
 			})
 		}
-		if err := governanceModel.CreateProposalChoices(tx, choices); err != nil {
+		if err := governance.CreateProposalChoices(tx, choices); err != nil {
 			return err
 		}
 		return nil
 	})
 }
 
-func GetProposal(proposalId uint64) (detail governanceModel.ProposalDetail, err error) {
-	publicInfo, err := governanceModel.GetProposalPublicInfo(mysql.DB, proposalId)
+func GetProposal(proposalId uint64) (detail governance.ProposalDetail, err error) {
+	publicInfo, err := governance.GetProposalPublicInfo(mysql.DB, proposalId)
 	if err != nil {
 		return
 	}
@@ -64,7 +64,7 @@ func GetProposal(proposalId uint64) (detail governanceModel.ProposalDetail, err 
 	if err != nil {
 		return
 	}
-	choices, err := governanceModel.GetProposalChoices(mysql.DB, proposalId)
+	choices, err := governance.GetProposalChoices(mysql.DB, proposalId)
 	if err != nil {
 		return
 	}
@@ -72,7 +72,7 @@ func GetProposal(proposalId uint64) (detail governanceModel.ProposalDetail, err 
 	if err != nil {
 		return
 	}
-	detail = governanceModel.ProposalDetail{
+	detail = governance.ProposalDetail{
 		ProposalPublicInfo:        publicInfo,
 		VoteSystemId:              dictModel.ID,
 		Strategies:                strategies,
@@ -95,20 +95,20 @@ func DeleteProposal(comerId, proposalId uint64) error {
 	if cm.Address == nil {
 		return errors.New(fmt.Sprintf("invalid comer %d without walletAddress", comerId))
 	}
-	proposal, err := governanceModel.GetProposalById(mysql.DB, proposalId)
+	proposal, err := governance.GetProposalById(mysql.DB, proposalId)
 	if err != nil {
 		return err
 	}
 	if proposal.ID == 0 {
 		return errors.New(fmt.Sprintf("proposal %d does not exist", proposalId))
 	}
-	admins, err := governanceModel.GetGovernanceAdminsByStartupId(mysql.DB, proposal.StartupId)
+	admins, err := governance.GetGovernanceAdminsByStartupId(mysql.DB, proposal.StartupID)
 	if err != nil {
 		return err
 	}
 	var can bool
 	if len(admins) == 0 {
-		can = comerId == proposal.AuthorComerId
+		can = comerId == proposal.AuthorComerID
 	} else {
 		for _, admin := range admins {
 			can = admin.WalletAddress == *cm.Address
@@ -119,10 +119,10 @@ func DeleteProposal(comerId, proposalId uint64) error {
 	}
 	if can {
 		return mysql.DB.Transaction(func(tx *gorm.DB) error {
-			if err := governanceModel.DeleteProposal(mysql.DB, comerId, proposalId); err != nil {
+			if err := governance.DeleteProposal(mysql.DB, comerId, proposalId); err != nil {
 				return err
 			}
-			if err := governanceModel.DeleteProposalChoices(tx, proposalId); err != nil {
+			if err := governance.DeleteProposalChoices(tx, proposalId); err != nil {
 				return err
 			}
 			return nil
@@ -131,40 +131,40 @@ func DeleteProposal(comerId, proposalId uint64) error {
 	return errors.New("cannot delete proposal")
 }
 
-func SelectProposalPublicList(request *governanceModel.ProposalListRequest) error {
-	proposals, err := governanceModel.SelectProposalList(mysql.DB, request)
+func SelectProposalPublicList(request *governance.ProposalListRequest) error {
+	proposals, err := governance.SelectProposalList(mysql.DB, request)
 	request.Rows = packItem(proposals)
 	return err
 }
 
 func GetStartupProposalList(startupId uint64, request *model.Pagination) error {
-	proposals, err := governanceModel.SelectProposalListByStartupId(mysql.DB, startupId, request)
+	proposals, err := governance.SelectProposalListByStartupId(mysql.DB, startupId, request)
 	request.Rows = packItem(proposals)
 	return err
 }
 
 func GetComerPostProposalList(comerId uint64, request *model.Pagination) error {
-	proposals, err := governanceModel.SelectProposalListByComerPosted(mysql.DB, comerId, request)
+	proposals, err := governance.SelectProposalListByComerPosted(mysql.DB, comerId, request)
 	request.Rows = packItem(proposals)
 	return err
 }
 
 func GetComerParticipateProposalList(comerId uint64, request *model.Pagination) error {
-	proposals, err := governanceModel.SelectProposalListByComerParticipate(mysql.DB, comerId, request)
+	proposals, err := governance.SelectProposalListByComerParticipate(mysql.DB, comerId, request)
 	request.Rows = packItem(proposals)
 	return err
 }
 
-func packItem(proposals []governanceModel.ProposalPublicInfo) []governanceModel.ProposalItem {
-	var list []governanceModel.ProposalItem
+func packItem(proposals []governance.ProposalPublicInfo) []governance.ProposalItem {
+	var list []governance.ProposalItem
 	if len(proposals) > 0 {
 		for _, proposal := range proposals {
 			result, err := calculateProposalVoteResult(proposal.ProposalId)
 			if err != nil {
 				log.Warn(err)
-				result = governanceModel.ProposalVoteResult{}
+				result = governance.ProposalVoteResult{}
 			}
-			list = append(list, governanceModel.ProposalItem{
+			list = append(list, governance.ProposalItem{
 				ProposalPublicInfo: proposal,
 				ProposalVoteResult: result,
 			})
@@ -173,14 +173,14 @@ func packItem(proposals []governanceModel.ProposalPublicInfo) []governanceModel.
 	return list
 }
 
-func calculateProposalVoteResult(proposalId uint64) (voteResult governanceModel.ProposalVoteResult, err error) {
+func calculateProposalVoteResult(proposalId uint64) (voteResult governance.ProposalVoteResult, err error) {
 	result, err := GetProposalCrtVoteResult(proposalId)
 	if err != nil {
 		return
 	}
 	choices := result.ChoiceVoteInfos
 	var (
-		max *governanceModel.ChoiceVoteInfo
+		max *governance.ChoiceVoteInfo
 		//maxChoiceVotes = decimal.Zero
 	)
 	if choices != nil && len(*choices) > 0 {
@@ -205,7 +205,7 @@ func calculateProposalVoteResult(proposalId uint64) (voteResult governanceModel.
 		maxVotesChoiceId = &max.ChoiceId
 		maxVotes = max.Votes
 	}
-	voteResult = governanceModel.ProposalVoteResult{
+	voteResult = governance.ProposalVoteResult{
 		MaximumVotesChoice:   maxVotesChoice,
 		MaximumVotesChoiceId: maxVotesChoiceId,
 		Votes:                maxVotes,
