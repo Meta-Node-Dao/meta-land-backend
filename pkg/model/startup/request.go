@@ -6,10 +6,15 @@ import (
 )
 
 type StartupListRequest struct {
-	Page    int      `form:"page"`
-	Size    int      `form:"size"`
-	Keyword string   `form:"keyword"`
-	Tags    []string `form:"tags"`
+	Page               int      `form:"page"`
+	Size               int      `form:"size"`
+	AdminComerId       int      `form:"admin_comer_id"`
+	ComerId            uint64   `form:"comer_id"`
+	Connected          bool     `form:"connected"`
+	Keyword            string   `form:"keyword"`
+	Tags               []string `form:"tags"`
+	Type               int      `form:"type"`
+	StartupTeamComerId uint64   `form:"startup_team_comer_id"`
 }
 
 type ListStartupRequest struct {

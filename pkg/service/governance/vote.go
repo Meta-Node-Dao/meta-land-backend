@@ -32,7 +32,7 @@ func VoteProposal(comerId, proposalId uint64, request governance.VoteRequest) er
 	if proposal.ID == 0 {
 		return fmt.Errorf("proposal %d does not exist", proposalId)
 	}
-	if proposal.Status != governance.ProposalActive {
+	if proposal.Status != int8(governance.ProposalActive) {
 		return errors.New("invalid proposal status")
 	}
 
@@ -45,13 +45,13 @@ func VoteProposal(comerId, proposalId uint64, request governance.VoteRequest) er
 	}
 	governanceVote := governance.GovernanceVote{
 		VoteInfo: governance.VoteInfo{
-			ProposalId:         proposalId,
-			VoterComerId:       comerId,
+			ProposalID:         proposalId,
+			VoterComerID:       comerId,
 			VoterWalletAddress: request.VoterWalletAddress,
-			ChoiceItemId:       request.ChoiceItemId,
+			ChoiceItemID:       request.ChoiceItemId,
 			ChoiceItemName:     request.ChoiceItemName,
 			Votes:              request.Votes,
-			IpfsHash:           request.IpfsHash,
+			IPFSHash:           request.IpfsHash,
 		},
 	}
 	pVoteSystem := governance.VoteSystem(proposal.VoteSystem)
@@ -106,9 +106,9 @@ func GetProposalCrtVoteResult(proposalId uint64) (result governance.CurrentPropo
 	if len(records) > 0 {
 		for _, choice := range choices {
 			for _, record := range records {
-				if choice.ID == record.ChoiceItemId {
+				if choice.ID == record.ChoiceItemID {
 					totalVotes = totalVotes.Add(record.Votes)
-					choiceItemId := record.ChoiceItemId
+					choiceItemId := record.ChoiceItemID
 					if details, ok := mp[choiceItemId]; ok {
 						details = append(details, record)
 						mp[choiceItemId] = details
@@ -120,8 +120,8 @@ func GetProposalCrtVoteResult(proposalId uint64) (result governance.CurrentPropo
 					if _, ok := mp[choice.ID]; !ok {
 						mp[choice.ID] = []governance.VoteDetail{
 							{VoteInfo: governance.VoteInfo{
-								ProposalId:     proposalId,
-								ChoiceItemId:   choice.ID,
+								ProposalID:     proposalId,
+								ChoiceItemID:   choice.ID,
 								ChoiceItemName: choice.ItemName,
 								Votes:          decimal.Zero,
 							}},
@@ -134,8 +134,8 @@ func GetProposalCrtVoteResult(proposalId uint64) (result governance.CurrentPropo
 		for _, choice := range choices {
 			mp[choice.ID] = []governance.VoteDetail{
 				{VoteInfo: governance.VoteInfo{
-					ProposalId:     proposalId,
-					ChoiceItemId:   choice.ID,
+					ProposalID:     proposalId,
+					ChoiceItemID:   choice.ID,
 					ChoiceItemName: choice.ItemName,
 					Votes:          decimal.Zero,
 				}},

@@ -34,16 +34,16 @@ func DeleteAdminsBySettingId(db *gorm.DB, settingId uint64) error {
 	return db.Where("setting_id = ?", settingId).Delete(&GovernanceAdmin{}).Error
 }
 
-func CreateProposal(db *gorm.DB, proposal *GovernanceProposalModel) error {
+func CreateProposal(db *gorm.DB, proposal *GovernanceProposal) error {
 	return db.Create(proposal).Error
 }
 
 func DeleteProposal(db *gorm.DB, comerId, proposalId uint64) error {
-	return db.Model(&GovernanceProposalModel{}).Where("id = ?", proposalId).Update("is_deleted", true).Error
+	return db.Model(&GovernanceProposal{}).Where("id = ?", proposalId).Update("is_deleted", true).Error
 }
 
-func GetProposalById(db *gorm.DB, proposalId uint64) (proposal GovernanceProposalModel, err error) {
-	err = db.Model(&GovernanceProposalModel{}).Where("id = ? and is_deleted = false", proposalId).Find(&proposal).Error
+func GetProposalById(db *gorm.DB, proposalId uint64) (proposal GovernanceProposal, err error) {
+	err = db.Model(&GovernanceProposal{}).Where("id = ? and is_deleted = false", proposalId).Find(&proposal).Error
 	return
 }
 
@@ -277,11 +277,11 @@ func SelectProposalListByComerParticipate(db *gorm.DB, comerId uint64, request *
 }
 
 func UpdateProposalStatus(db *gorm.DB, proposalId uint64, status ProposalStatus) error {
-	return db.Model(&GovernanceProposalModel{}).Where("id = ?", proposalId).Update("status", status).Error
+	return db.Model(&GovernanceProposal{}).Where("id = ?", proposalId).Update("status", status).Error
 }
-func SelectToBeStartedProposalListWithin1Min(db *gorm.DB) (list []GovernanceProposalModel, err error) {
+func SelectToBeStartedProposalListWithin1Min(db *gorm.DB) (list []GovernanceProposal, err error) {
 	now := time.Now()
-	err = db.Model(&GovernanceProposalModel{}).
+	err = db.Model(&GovernanceProposal{}).
 		Where("status = ? and (start_time between ? and ? or start_time < ? and end_time > ?)",
 			ProposalUpcoming,
 			now.Add(-30*time.Second),
@@ -292,8 +292,8 @@ func SelectToBeStartedProposalListWithin1Min(db *gorm.DB) (list []GovernanceProp
 	return
 }
 
-func SelectToEndedProposalListWithin1Min(db *gorm.DB) (list []GovernanceProposalModel, err error) {
-	err = db.Model(&GovernanceProposalModel{}).
+func SelectToEndedProposalListWithin1Min(db *gorm.DB) (list []GovernanceProposal, err error) {
+	err = db.Model(&GovernanceProposal{}).
 		Where("is_deleted = false and status not in  ? and end_time <= ?",
 			[]ProposalStatus{ProposalInvalid, ProposalEnded, ProposalUpcoming, ProposalPending},
 			time.Now().Add(time.Second*30)).

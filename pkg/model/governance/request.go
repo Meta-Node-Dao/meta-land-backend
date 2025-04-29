@@ -46,6 +46,6 @@ type ProposalListRequest struct {
 }
 
 type CreateProposalRequest struct {
-	GovernanceProposalInfo
+	GovernanceProposal
 	Choices []ProposalChoice `json:"choices"`
 }
