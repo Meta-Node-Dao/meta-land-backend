@@ -79,6 +79,13 @@ enableSeconds = false
 spec = "*/3 * * * *"
 delayExecType = "skip"
 
+[ceres.status.cron]
+enableDistributedTask = false
+enableImmediatelyRun = false
+enableSeconds = false
+spec = "*/1 * * * *"
+delayExecType = "skip"
+
 [ceres.cron]
 enableDistributedTask = false
 enableImmediatelyRun = false
