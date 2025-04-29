@@ -13,7 +13,6 @@ import (
 	"github.com/qiniu/x/log"
 )
 
-// CreateProfile create the profile
 func CreateProfile(ctx *router.Context) {
 	comerID, _ := ctx.Keys[middleware.ComerUinContextKey].(uint64)
 	request := &model.CreateProfileRequest{}
@@ -32,7 +31,6 @@ func CreateProfile(ctx *router.Context) {
 	ctx.OK(nil)
 }
 
-// GetProfile get current Comer profile
 func GetProfile(ctx *router.Context) {
 	comerID, _ := ctx.Keys[middleware.ComerUinContextKey].(uint64)
 	var response model.ComerProfileResponse
@@ -44,7 +42,6 @@ func GetProfile(ctx *router.Context) {
 	ctx.OK(response)
 }
 
-// UpdateProfile update the profile
 func UpdateProfile(ctx *router.Context) {
 	comerID, _ := ctx.Keys[middleware.ComerUinContextKey].(uint64)
 	request := &model.UpdateProfileRequest{}
@@ -125,19 +122,19 @@ func UpdateComerBio(ctx *router.Context) {
 	ctx.OK(nil)
 }
 
-func UpdateComerLanguages(ctx *router.Context) {
-	comerId, _ := ctx.Keys[middleware.ComerUinContextKey].(uint64)
-	var request model.UpdateLanguageInfosRequest
-	if er := ctx.ShouldBindJSON(&request); er != nil {
-		ctx.HandleError(er)
-		return
-	}
-	if err := service.UpdateLanguages(comerId, request); err != nil {
-		ctx.HandleError(err)
-		return
-	}
-	ctx.OK(nil)
-}
+//func UpdateComerLanguages(ctx *router.Context) {
+//	comerId, _ := ctx.Keys[middleware.ComerUinContextKey].(uint64)
+//	var request model.UpdateLanguageInfosRequest
+//	if er := ctx.ShouldBindJSON(&request); er != nil {
+//		ctx.HandleError(er)
+//		return
+//	}
+//	if err := service.UpdateLanguages(comerId, request); err != nil {
+//		ctx.HandleError(err)
+//		return
+//	}
+//	ctx.OK(nil)
+//}
 
 func UpdateComerEducations(ctx *router.Context) {
 	comerId, _ := ctx.Keys[middleware.ComerUinContextKey].(uint64)

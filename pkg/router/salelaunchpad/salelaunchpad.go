@@ -1,4 +1,4 @@
-package mock
+package salelaunchpad
 
 import (
 	"ceres/pkg/model"
