@@ -3,6 +3,7 @@ package http
 import (
 	"ceres/pkg/router"
 	accountController "ceres/pkg/router/account"
+	socialController "ceres/pkg/router/account/social"
 	bountyController "ceres/pkg/router/bounty"
 	crowdfundingController "ceres/pkg/router/crowdfunding"
 	governanceController "ceres/pkg/router/governance"
@@ -137,7 +138,7 @@ func Init() (err error) {
 
 	social := apiRoot.Group("/socials")
 	{
-		social.GET("/", router.Wrap(accountController.GetSocials))
+		social.GET("/", router.Wrap(socialController.GetSocials))
 	}
 
 	startup := apiRoot.Group("/startups")

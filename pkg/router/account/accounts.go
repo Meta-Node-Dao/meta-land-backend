@@ -314,14 +314,6 @@ func UnbindComerSocials(ctx *router.Context) {
 	ctx.OK(message)
 }
 
-func GetSocials(c *router.Context) {
-	var res model.PageData
-	res.Total = 0
-	res.Page = 0
-	res.Size = 0
-	c.OK(res)
-}
-
 func SetShare(c *router.Context) {
 	var res account.ShareSetResponse
 	res.ShareCode = "123456"
