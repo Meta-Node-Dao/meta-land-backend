@@ -51,7 +51,7 @@ type SaleLaunchpadResponse struct {
 	CycleRelease         int                          `json:"cycle_release"`
 	Description          string                       `json:"description"`
 	Detail               string                       `json:"detail"`
-	DexInitPrice         int                          `json:"dex_init_price"`
+	DexInitPrice         float64                      `json:"dex_init_price"`
 	DexPairAddress       string                       `json:"dex_pair_address"`
 	DexRouter            string                       `json:"dex_router"`
 	EndedAt              int                          `json:"ended_at"`
@@ -137,20 +137,20 @@ type SignResponse struct {
 }
 
 type CrowdfundingBasicResponse struct {
-	BuyPrice             int                 `json:"buy_price"`
+	BuyPrice             float64             `json:"buy_price"`
 	BuyTokenContract     string              `json:"buy_token_contract"`
 	BuyTokenSymbol       string              `json:"buy_token_symbol"`
 	ChainId              int                 `json:"chain_id"`
 	ComerId              int                 `json:"comer_id"`
 	CrowdfundingContract string              `json:"crowdfunding_contract"`
-	DexInitPrice         int                 `json:"dex_init_price"`
+	DexInitPrice         float64             `json:"dex_init_price"`
 	DexRouter            string              `json:"dex_router"`
 	EndTime              string              `json:"end_time"`
 	Id                   int                 `json:"id"`
 	Investors            int                 `json:"investors"`
 	MaxBuyAmount         int                 `json:"max_buy_amount"`
 	MaxSellPercent       int                 `json:"max_sell_percent"`
-	MinBuyAmount         int                 `json:"min_buy_amount"`
+	MinBuyAmount         float64             `json:"min_buy_amount"`
 	PairAddress          string              `json:"pair_address"`
 	Poster               string              `json:"poster"`
 	RaiseBalance         int                 `json:"raise_balance"`
