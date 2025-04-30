@@ -11,7 +11,7 @@
  Target Server Version : 80024
  File Encoding         : 65001
 
- Date: 28/04/2025 11:52:39
+ Date: 30/04/2025 13:44:48
 */
 
 SET NAMES utf8mb4;
@@ -23,24 +23,24 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `bounty`;
 CREATE TABLE `bounty` (
                           `id` bigint NOT NULL,
-                          `chain_id` bigint DEFAULT NULL COMMENT 'Chain ID',
-                          `tx_hash` varchar(200) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Transcation Hash',
-                          `deposit_contract` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Contract Address',
-                          `startup_id` bigint DEFAULT NULL,
-                          `comer_id` bigint DEFAULT NULL,
-                          `title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-                          `apply_cutoff_date` datetime DEFAULT NULL,
-                          `discussion_link` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-                          `deposit_token_symbol` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-                          `applicant_deposit` int DEFAULT NULL,
-                          `founder_deposit` int DEFAULT NULL,
-                          `description` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-                          `payment_mode` int DEFAULT NULL,
-                          `status` tinyint(1) DEFAULT NULL,
-                          `total_reward_token` int DEFAULT NULL,
-                          `created_at` datetime DEFAULT NULL,
-                          `updated_at` datetime DEFAULT NULL,
-                          `is_deleted` tinyint(1) DEFAULT NULL,
+                          `chain_id` bigint NOT NULL DEFAULT '0' COMMENT 'Chain ID',
+                          `tx_hash` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT 'Transcation Hash',
+                          `deposit_contract` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT 'Contract Address',
+                          `startup_id` bigint NOT NULL DEFAULT '0',
+                          `comer_id` bigint NOT NULL DEFAULT '0',
+                          `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+                          `apply_cutoff_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                          `discussion_link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+                          `deposit_token_symbol` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+                          `applicant_deposit` int NOT NULL DEFAULT '0',
+                          `founder_deposit` int NOT NULL DEFAULT '0',
+                          `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+                          `payment_mode` int NOT NULL DEFAULT '0',
+                          `status` tinyint(1) NOT NULL DEFAULT '0',
+                          `total_reward_token` int NOT NULL DEFAULT '0',
+                          `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                          `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                          `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
                           PRIMARY KEY (`id`),
                           UNIQUE KEY `chain_tx_uindex` (`chain_id`,`tx_hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -233,6 +233,20 @@ CREATE TABLE `comer_account` (
                                  UNIQUE KEY `comer_account_oin_uindex` (`oin`),
                                  KEY `comer_account_comer_id_index` (`comer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Table structure for comer_follow_rel
+-- ----------------------------
+DROP TABLE IF EXISTS `comer_follow_rel`;
+CREATE TABLE `comer_follow_rel` (
+                                    `id` bigint NOT NULL AUTO_INCREMENT,
+                                    `comer_id` bigint NOT NULL DEFAULT '0',
+                                    `target_comer_id` bigint NOT NULL DEFAULT '0',
+                                    `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                    `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                    `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+                                    PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Table structure for comer_profile
