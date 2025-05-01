@@ -17,13 +17,6 @@ type StartupListResponse struct {
 	Size  int64     `json:"size"`
 }
 
-type StartupPageData struct {
-	List  []StartupBasicResponse `json:"list"`
-	Page  int                    `json:"page"`
-	Size  int                    `json:"size"`
-	Total int                    `json:"total"`
-}
-
 type StartupBasicResponse struct {
 	Banner         string                    `json:"banner"`
 	ChainId        int                       `json:"chain_id"`

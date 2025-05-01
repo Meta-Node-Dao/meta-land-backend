@@ -5,10 +5,10 @@ import (
 	"ceres/pkg/model/account"
 )
 
-type StartupListRequest struct {
+type GetStartupsRequest struct {
 	Page               int      `form:"page"`
 	Size               int      `form:"size"`
-	AdminComerId       int      `form:"admin_comer_id"`
+	AdminComerId       uint64   `form:"admin_comer_id"`
 	ComerId            uint64   `form:"comer_id"`
 	Connected          bool     `form:"connected"`
 	Keyword            string   `form:"keyword"`
