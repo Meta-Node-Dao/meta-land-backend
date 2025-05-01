@@ -19,11 +19,19 @@ import (
 	"github.com/gotomicro/ego/task/ecron"
 	"github.com/qiniu/x/log"
 	"gorm.io/gorm"
+	"runtime/debug"
 	"strings"
 	"time"
 )
 
 const RetryThreshold = 3
+
+func Recover() {
+	if err := recover(); err != nil {
+		s := string(debug.Stack())
+		log.Error("recover: err=%v\n stack=%s", err, s)
+	}
+}
 
 // GetAllContractAddresses  todo need refactor...
 func GetAllContractAddresses() ecron.Ecron {
@@ -44,6 +52,8 @@ func GetAllContractAddresses() ecron.Ecron {
 				go serviceTransaction.UpdateBountyContractAndTransactoinStatus(mysql.DB, sourceID, status, contractAddress)
 			case serviceTransaction.CrowdfundingContractCreated:
 				go func() {
+					defer Recover()
+
 					err := func(onChainStatus int, address string) error {
 						if onChainStatus == 1 && strings.TrimSpace(address) != "" {
 
@@ -73,6 +83,8 @@ func GetAllContractAddresses() ecron.Ecron {
 				}()
 			case serviceTransaction.CrowdfundingModified:
 				go func() {
+					defer Recover()
+
 					err := func(onChainStatus int, address string) error {
 						if onChainStatus == 1 {
 
@@ -106,6 +118,8 @@ func GetAllContractAddresses() ecron.Ecron {
 				}()
 			case serviceTransaction.CrowdfundingRemoved:
 				go func() {
+					defer Recover()
+
 					err := func(onChainStatus int, address string) error {
 						if onChainStatus == 1 {
 
@@ -126,6 +140,8 @@ func GetAllContractAddresses() ecron.Ecron {
 				}()
 			case serviceTransaction.CrowdfundingCancelled:
 				go func() {
+					defer Recover()
+
 					err := func(onChainStatus int, address string) error {
 						if onChainStatus == 1 {
 
@@ -146,6 +162,8 @@ func GetAllContractAddresses() ecron.Ecron {
 				}()
 			case serviceTransaction.CrowdfundingBought, serviceTransaction.CrowdfundingSold:
 				go func() {
+					defer Recover()
+
 					err := func(onChainStatus int, address string) error {
 						swap, err := crowdfunding.GetCrowdfundingSwapById(mysql.DB, sourceID)
 						if err != nil {
@@ -206,7 +224,6 @@ func postOnChainFailure(tx *gorm.DB, tran *modelTransaction.GetTransactions, sta
 			log.Warnf("#### unknown failure..%d.%s..%d", tran.TransactionId, tran.TxHash, tran.SourceType)
 			return nil
 		}
-
 	}
 
 	return nil

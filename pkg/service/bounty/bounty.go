@@ -20,6 +20,7 @@ import (
 	"ceres/pkg/utility/tool"
 	"errors"
 	"fmt"
+	"runtime/debug"
 	"time"
 
 	"github.com/qiniu/x/log"
@@ -125,7 +126,7 @@ func createDeposit(tx *gorm.DB, bountyID uint64, request *model.BountyRequest) e
 		Access:      model.AccessIn,
 		TokenSymbol: request.Deposit.TokenSymbol,
 		TokenAmount: request.Deposit.TokenAmount,
-		TimeStamp:   time.Now(),
+		Timestamp:   time.Now(),
 	}
 	err := model.CreateDeposit(tx, deposit)
 	if err != nil {
@@ -158,7 +159,7 @@ func createPaymentTerms(tx *gorm.DB, bountyID uint64, request *model.BountyReque
 		for _, stage := range request.PayDetail.Stages {
 			paymentTerms := &model.BountyPaymentTerms{
 				BountyID:     bountyID,
-				PaymentMode:  paymentMode,
+				PaymentMode:  int8(paymentMode),
 				Token1Symbol: stage.Token1Symbol,
 				Token1Amount: stage.Token1Amount,
 				Token2Symbol: stage.Token2Symbol,
@@ -177,7 +178,7 @@ func createPaymentTerms(tx *gorm.DB, bountyID uint64, request *model.BountyReque
 		for i := 1; i <= request.Period.PeriodAmount; i++ {
 			paymentTerms := &model.BountyPaymentTerms{
 				BountyID:     bountyID,
-				PaymentMode:  paymentMode,
+				PaymentMode:  int8(paymentMode),
 				Token1Symbol: request.Period.Token1Symbol,
 				Token1Amount: request.Period.Token1Amount,
 				Token2Symbol: request.Period.Token2Symbol,
@@ -243,6 +244,13 @@ func createApplicantsSkills(tx *gorm.DB, bountyID uint64, request *model.BountyR
 func getContract(chainID uint64, txHash string, bountyID uint64) {
 	var contractChan = make(chan *model.ContractInfoResponse, 1)
 	go func() {
+		defer func() {
+			if err := recover(); err != nil {
+				s := string(debug.Stack())
+				log.Error("recover: err=%v\n stack=%s", err, s)
+			}
+		}()
+
 		// 重试100次
 		retryCount := 100
 		for retryCount > 0 {
@@ -406,14 +414,14 @@ func iter(bounties []model.Bounty, crtComerId uint64) (items []*model.DetailItem
 	return items, nil
 }
 
-var bountyStatusMap = map[int]string{
+var bountyStatusMap = map[int8]string{
 	1: "Ready to work",
 	2: "Started working",
 	3: "Completed",
 	4: "Expired",
 }
 
-var bountyDepositStatusMap = map[int]string{
+var bountyDepositStatusMap = map[int8]string{
 	0: "Pending",
 	1: "Success",
 	2: "Failure",
@@ -496,23 +504,23 @@ func packItem(bounty model.Bounty, startupMap *map[uint64]startup.Startup, itemT
 		}
 		log.Infof("#### my bounty deposit: %v\n", bountyDeposit)
 		onChainStatus = bountyDepositStatusMap[bountyDeposit.Status]
-		//switch bountyApplicant.Status {
-		//case 1:
+		// switch bountyApplicant.Status {
+		// case 1:
 		//	// 已申请
 		//	status = "Applied"
-		//case 2:
+		// case 2:
 		//	// 通过申请
 		//	status = "Approved"
-		//case 3:
+		// case 3:
 		//	//
 		//	status = "Submitted"
-		//case 4:
+		// case 4:
 		//	status = "Revoked"
-		//case 5:
+		// case 5:
 		//	status = "Rejected"
-		//case 6:
+		// case 6:
 		//	status = "Quited"
-		//}
+		// }
 	}
 	detailItem.DepositRequirements = bounty.ApplicantDeposit
 	detailItem.Status = status
@@ -631,7 +639,7 @@ func AddDeposit(bountyID uint64, request *model.AddDepositRequest, comerID uint6
 		Access:      model.AccessIn,
 		TokenSymbol: request.TokenSymbol,
 		TokenAmount: request.TokenAmount,
-		TimeStamp:   time.Now(),
+		Timestamp:   time.Now(),
 	}
 
 	transactionApplicant := &model4.Transaction{
@@ -671,7 +679,7 @@ func PayReward(bountyID uint64, request *model.PaidRequest) error {
 
 func CreateActivities(bountyID uint64, req *model.ActivitiesRequest, comerID uint64) error {
 	postUpdate := &model3.PostUpdate{
-		SourceType: req.SourceType, //1 bounty normal 2 send-paid-info
+		SourceType: req.SourceType, // 1 bounty normal 2 send-paid-info
 		SourceID:   bountyID,
 		ComerID:    comerID,
 		Content:    req.Content,
@@ -704,7 +712,7 @@ func CreateApplicants(bountyID uint64, request *model.ApplicantsDepositRequest, 
 		Access:      model.AccessIn,
 		TokenSymbol: request.TokenSymbol,
 		TokenAmount: request.TokenAmount,
-		TimeStamp:   time.Now(),
+		Timestamp:   time.Now(),
 	}
 	transaction := &model4.Transaction{
 		ChainID:    request.ChainID,
@@ -822,7 +830,7 @@ func UpdateApplicantApprovedStatus(request *model.ApplicantsApprovedRequst, boun
 					Access:      model.AccessOut,
 					TokenSymbol: rejectedApplicantInfo.TokenSymbol,
 					TokenAmount: rejectedApplicantInfo.TokenAmount,
-					TimeStamp:   time.Now(),
+					Timestamp:   time.Now(),
 				}
 
 				err = model.CreateDeposit(tx, deposit)
@@ -892,7 +900,7 @@ func ReleaseFounderDeposit(request *model.ReleaseRequst, bountyID uint64, comerI
 					Access:      model.AccessOut,
 					TokenSymbol: rejectedApplicantInfo.TokenSymbol,
 					TokenAmount: rejectedApplicantInfo.TokenAmount,
-					TimeStamp:   time.Now(),
+					Timestamp:   time.Now(),
 				}
 
 				transactionApplicant := &model4.Transaction{
@@ -953,7 +961,7 @@ func ReleaseComerDeposit(request *model.ReleaseMyDepositRequst, bountyID uint64,
 					Access:      model.AccessOut,
 					TokenSymbol: applicantsRejectedDeposit.TokenSymbol,
 					TokenAmount: applicantsRejectedDeposit.TokenAmount,
-					TimeStamp:   time.Now(),
+					Timestamp:   time.Now(),
 				}
 
 				transactionApplicant := &model4.Transaction{

@@ -86,15 +86,15 @@ func (BountyContact) TableName() string {
 // BountyDeposit 赏金任务质押记录表结构
 type BountyDeposit struct {
 	model.Base
-	ChainID     uint64     `gorm:"column:chain_id;uniqueIndex:chain_tx_uindex" json:"chain_id"` // 链ID，复合唯一索引
-	TxHash      string     `gorm:"column:tx_hash;uniqueIndex:chain_tx_uindex" json:"tx_hash"`   // 交易哈希，复合唯一索引
-	Status      int8       `gorm:"column:status" json:"status"`                                 // 质押状态
-	BountyID    uint64     `gorm:"column:bounty_id;index:idx_bounty" json:"bounty_id"`          // 关联的赏金任务ID
-	ComerID     uint64     `gorm:"column:comer_id;index:idx_comer" json:"comer_id"`             // 用户ID
-	Access      int        `gorm:"column:access" json:"access"`                                 // 访问权限
-	TokenSymbol string     `gorm:"column:token_symbol" json:"token_symbol"`                     // 代币符号
-	TokenAmount int        `gorm:"column:token_amount" json:"token_amount"`                     // 代币数量
-	Timestamp   *time.Time `gorm:"column:timestamp" json:"timestamp"`                           // 时间戳(指针类型允许NULL)
+	ChainID     uint64    `gorm:"column:chain_id;uniqueIndex:chain_tx_uindex" json:"chain_id"` // 链ID，复合唯一索引
+	TxHash      string    `gorm:"column:tx_hash;uniqueIndex:chain_tx_uindex" json:"tx_hash"`   // 交易哈希，复合唯一索引
+	Status      int8      `gorm:"column:status" json:"status"`                                 // 质押状态
+	BountyID    uint64    `gorm:"column:bounty_id;index:idx_bounty" json:"bounty_id"`          // 关联的赏金任务ID
+	ComerID     uint64    `gorm:"column:comer_id;index:idx_comer" json:"comer_id"`             // 用户ID
+	Access      int       `gorm:"column:access" json:"access"`                                 // 访问权限
+	TokenSymbol string    `gorm:"column:token_symbol" json:"token_symbol"`                     // 代币符号
+	TokenAmount int       `gorm:"column:token_amount" json:"token_amount"`                     // 代币数量
+	Timestamp   time.Time `gorm:"column:timestamp" json:"timestamp"`                           // 时间戳(指针类型允许NULL)
 }
 
 // TableName the BountyDeposit table name for gorm
