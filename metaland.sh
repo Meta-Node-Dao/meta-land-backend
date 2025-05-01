@@ -11,7 +11,9 @@ case "${1}" in
 
         while true
         do
-          ${ENV} ./hack/run start
+            ps -ef|grep "hack/config/"|grep -v "grep"|awk '{print $2}'|xargs kill -9
+            sleep 2
+            ${ENV} ./hack/run start
         done
         ;;
     *)
