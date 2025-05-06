@@ -1,7 +1,11 @@
 package chain
 
-// ListResponse
-// Chain list response
-type ListResponse struct {
-	List []Chain `json:"list"`
+type ChainListResponse struct {
+	List []ChainBasicResponse `json:"list"`
+}
+
+type ChainBasicResponse struct {
+	Chain
+	ChainContracts []ChainContract `json:"chain_contracts" gorm:"foreignKey:ChainID;references:ChainID"`
+	ChainEndpoints []ChainEndpoint `json:"chain_endpoints" gorm:"foreignKey:ChainID;references:ChainID"`
 }

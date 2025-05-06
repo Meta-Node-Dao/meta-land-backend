@@ -8,7 +8,7 @@ import (
 
 // GetChainList get all chain list
 func GetChainList(ctx *router.Context) {
-	var response chain.ListResponse
+	var response chain.ChainListResponse
 	if err := service.GetChainList(&response); err != nil {
 		ctx.HandleError(err)
 		return

@@ -4,15 +4,13 @@ import (
 	"ceres/pkg/model"
 )
 
-// Chain  Comunion support Chains.
+// Chain 区块链网络表结构
 type Chain struct {
 	model.Base
-	ChainID        uint64          `gorm:"column:chain_id" json:"chain_id"` // 链ID
-	Name           string          `gorm:"column:name" json:"name"`         // 链名称
-	Logo           string          `gorm:"column:logo" json:"logo"`         // 链图标
-	Status         int             `gorm:"column:status" json:"status"`     // 链状态
-	ChainContracts []ChainContract `json:"chain_contracts" gorm:"foreignKey:ChainID;references:ChainID"`
-	ChainEndpoints []ChainEndpoint `json:"chain_endpoints" gorm:"foreignKey:ChainID;references:ChainID"`
+	ChainID uint64 `gorm:"column:chain_id;uniqueIndex" json:"chain_id"` // 链ID（唯一索引）
+	Name    string `gorm:"column:name;not null;default:''" json:"name"` // 链名称
+	Logo    string `gorm:"column:logo;not null;default:''" json:"logo"` // 链Logo
+	Status  int8   `gorm:"column:status;default:1" json:"status"`       // 状态：1-正常，2-禁用
 }
 
 // TableName identify the table name of this model.
@@ -20,16 +18,16 @@ func (Chain) TableName() string {
 	return "chain"
 }
 
-// ChainContract  Comunion contracts.
+// ChainContract 区块链合约表结构
 type ChainContract struct {
 	model.Base
-	ChainID       uint64 `gorm:"column:chain_id" json:"chain_id"`               // 链ID
-	Project       int    `gorm:"column:project" json:"project"`                 // 合约项目：1 startup, 2 bounty, 3 crowdfunding, 4 gover
-	Address       string `gorm:"column:address" json:"address"`                 // 合约地址
-	Type          int    `gorm:"column:type" json:"type"`                       // 合约类型 1工厂合约, 2子合约
-	Version       string `gorm:"column:version" json:"version"`                 // 合约版本
-	Abi           string `gorm:"column:abi" json:"abi"`                         // 合约ABI JSON
-	CreatedTxHash string `gorm:"column:created_tx_hash" json:"created_tx_hash"` // 合约创建交易HASH
+	ChainID       uint64 `gorm:"column:chain_id;not null;default:0" json:"chain_id"`                // 链ID
+	Address       string `gorm:"column:address;not null;default:''" json:"address"`                 // 合约地址
+	Project       int8   `gorm:"column:project;not null;default:0" json:"project"`                  // 项目类型：1-Startup, 2-Bounty, 3-Crowdfunding, 4-Gover
+	Type          int8   `gorm:"column:type;not null;default:0" json:"type"`                        // 合约类型：1-工厂合约, 2-子合约
+	Version       string `gorm:"column:version;not null;default:''" json:"version"`                 // 合约版本
+	ABI           string `gorm:"column:abi;type:text;not null" json:"abi"`                          // ABI JSON
+	CreatedTxHash string `gorm:"column:created_tx_hash;not null;default:''" json:"created_tx_hash"` // 创建交易哈希
 }
 
 // TableName identify the table name of this model.
@@ -37,13 +35,13 @@ func (ChainContract) TableName() string {
 	return "chain_contract"
 }
 
-// ChainEndpoint  endpoint of all chain list.
+// ChainEndpoint 区块链节点端点表结构
 type ChainEndpoint struct {
 	model.Base
-	ChainID  uint64 `gorm:"column:chain_id" json:"chain_id"` // 链ID
-	Protocol int    `gorm:"column:protocol" json:"protocol"` // 节点协议 1 RPC, 2 WSS
-	URL      string `gorm:"column:url" json:"url"`           // 节点URL地址
-	Status   int    `gorm:"column:status" json:"status"`     // 节点状态
+	Protocol int8   `gorm:"column:protocol;not null;default:0" json:"protocol"` // 通信协议：1-rpc 2-wss
+	ChainID  uint64 `gorm:"column:chain_id;not null;default:0" json:"chain_id"` // 链ID
+	URL      string `gorm:"column:url;not null;default:''" json:"url"`          // 节点URL
+	Status   int8   `gorm:"column:status;not null;default:1" json:"status"`     // 状态：1-正常 2-禁用
 }
 
 // TableName identify the table name of this model.

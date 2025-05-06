@@ -5,7 +5,7 @@ import (
 )
 
 // GetChainList get chain list
-func GetChainList(db *gorm.DB, chains *[]Chain) (err error) {
+func GetChainList(db *gorm.DB, chains *[]ChainBasicResponse) (err error) {
 	err = db.Preload("ChainContracts", func(tx *gorm.DB) *gorm.DB {
 		return tx.Where(ChainContract{
 			Type: 1,
@@ -17,7 +17,7 @@ func GetChainList(db *gorm.DB, chains *[]Chain) (err error) {
 }
 
 // GetChainCompleteList get chain complete list
-func GetChainCompleteList(db *gorm.DB, chains *[]Chain) (err error) {
+func GetChainCompleteList(db *gorm.DB, chains *[]ChainBasicResponse) (err error) {
 	err = db.
 		Preload("ChainContracts", func(tx *gorm.DB) *gorm.DB {
 			return tx.Where(ChainContract{

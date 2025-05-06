@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"math/big"
 	"net/http"
+	"runtime/debug"
 	"strings"
 	"sync"
 	"time"
@@ -31,6 +32,13 @@ var (
 
 func StartListen() {
 	var count = 0
+	defer func() {
+		if err := recover(); err != nil {
+			s := string(debug.Stack())
+			log.Error("recover: err=%v\n stack=%s", err, s)
+		}
+	}()
+
 	for {
 		log.Info("event.StartListen No:", count)
 		waitGroup := &sync.WaitGroup{}
@@ -38,6 +46,12 @@ func StartListen() {
 
 		listenEvent := func() {
 			defer waitGroup.Done()
+			defer func() {
+				if err := recover(); err != nil {
+					s := string(debug.Stack())
+					log.Error("recover: err=%v\n stack=%s", err, s)
+				}
+			}()
 			SubAllEvent()
 		}
 
@@ -71,6 +85,12 @@ func SubAllEvent() {
 				waitGroup.Add(1)
 				listenEvent := func(client eth.Client) {
 					defer waitGroup.Done()
+					defer func() {
+						if err := recover(); err != nil {
+							s := string(debug.Stack())
+							log.Error("recover: err=%v\n stack=%s", err, s)
+						}
+					}()
 					SubEvent(client)
 				}
 				go listenEvent(*client)
@@ -164,6 +184,12 @@ func HandleAllClientStartup() error {
 			waitGroup.Add(1)
 			listenEvent := func(client eth.Client, blockNumber *big.Int) {
 				defer waitGroup.Done()
+				defer func() {
+					if err := recover(); err != nil {
+						s := string(debug.Stack())
+						log.Error("recover: err=%v\n stack=%s", err, s)
+					}
+				}()
 				HandleClientStartup(client, blockNumber)
 
 				// err = redis.Client.Set(context.TODO(), cacheKey, recentBlockNumber, expire)

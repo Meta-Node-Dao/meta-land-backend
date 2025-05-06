@@ -1,6 +1,8 @@
 package dict
 
-import "ceres/pkg/model"
+import (
+	"ceres/pkg/model"
+)
 
 type DictStatus int
 
@@ -9,21 +11,20 @@ const (
 	Disabled
 )
 
-type DictDataModel struct {
-	model.RelationBase
-	DictData
-}
-
+// DictData 字典数据表结构
 type DictData struct {
-	StartupId uint64     `gorm:"startup_id" json:"startupId"`
-	DictType  string     `gorm:"dict_type" json:"dictType"`
-	DictLabel string     `gorm:"dict_label" json:"dictLabel"`
-	DictValue string     `gorm:"dict_value" json:"dictValue"`
-	SeqNum    int        `gorm:"seq_num" json:"seqNum"`
-	Status    DictStatus `gorm:"status" json:"status"`
-	Remark    string     `gorm:"remark" json:"remark"`
+	model.Base
+	StartupID uint64 `gorm:"column:startup_id" json:"startup_id"`              // 关联的初创公司ID
+	DictType  string `gorm:"column:dict_type;index:idx_type" json:"dict_type"` // 字典类型
+	DictLabel string `gorm:"column:dict_label" json:"dict_label"`              // 字典标签
+	DictValue string `gorm:"column:dict_value" json:"dict_value"`              // 字典键值
+	SeqNum    int    `gorm:"column:seq_num" json:"seq_num"`                    // 显示顺序
+	Status    int8   `gorm:"column:status" json:"status"`                      // 状态(1:启用 2:停用)
+	Remark    string `gorm:"column:remark" json:"remark"`                      // 备注
+
 }
 
-func (receiver DictDataModel) TableName() string {
+// TableName 指定表名
+func (DictData) TableName() string {
 	return "dict_data"
 }

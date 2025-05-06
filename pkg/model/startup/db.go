@@ -89,7 +89,7 @@ func ListStartups(db *gorm.DB, comerID uint64, input *ListStartupRequest, startu
 }
 
 // 数据库分页查询项目列表
-func GetStartupLists(db *gorm.DB, input *StartupListRequest, startups *[]Startup) (total int64, err error) {
+func GetStartupLists(db *gorm.DB, input *GetStartupsRequest, startups *[]Startup) (total int64, err error) {
 	db = db.Where("is_deleted = false")
 	if input.Keyword != "" {
 		db = db.Where("name like ?", "%"+input.Keyword+"%")

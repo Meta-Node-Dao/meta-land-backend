@@ -12,12 +12,27 @@ import (
 	"gorm.io/gorm"
 )
 
+type MessageResponse struct {
+	Message string `json:"message"`
+}
+
+type PageData struct {
+	List  []interface{} `json:"list"`
+	Page  int           `json:"page"`
+	Size  int           `json:"size"`
+	Total int           `json:"total"`
+}
+
+type IsExistResponse struct {
+	IsExist bool `json:"is_exist"`
+}
+
 // Base contains common columns for all tables.
 type Base struct {
-	ID        uint64    `gorm:"primary_key;column:id" json:"id"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
-	IsDeleted bool      `gorm:"column:is_deleted" json:"isDeleted"`
+	ID        uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime" json:"created_at"`
+	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime" json:"updated_at"`
+	IsDeleted bool      `gorm:"column:is_deleted;default:false" json:"is_deleted"`
 }
 
 func (base *Base) BeforeCreate(tx *gorm.DB) (err error) {
@@ -27,9 +42,9 @@ func (base *Base) BeforeCreate(tx *gorm.DB) (err error) {
 
 // RelationBase contains common columns for all tables.
 type RelationBase struct {
-	ID        uint64    `gorm:"primary_key;column:id" json:"id"`
-	CreatedAt time.Time `gorm:"created_at" json:"createdAt"`
-	UpdatedAt time.Time `gorm:"updated_at" json:"updatedAt"`
+	ID        uint64    `gorm:"column:id;primaryKey;autoIncrement" json:"id"`
+	CreatedAt time.Time `gorm:"column:created_at;autoCreateTime" json:"created_at"`
+	UpdatedAt time.Time `gorm:"column:updated_at;autoUpdateTime" json:"updated_at"`
 }
 
 func (base *RelationBase) BeforeCreate(tx *gorm.DB) (err error) {

@@ -13,6 +13,7 @@ import (
 	"ceres/pkg/model/bounty"
 	model "ceres/pkg/model/transaction"
 	"context"
+	"runtime/debug"
 	"time"
 
 	common2 "github.com/ethereum/go-ethereum/common"
@@ -55,6 +56,13 @@ func CreateTransaction(db *gorm.DB, bountyID uint64, request *bounty.BountyReque
 }
 
 func UpdateBountyContractAndTransactoinStatus(tx *gorm.DB, bountyID uint64, status int, contractAddress string) {
+	defer func() {
+		if err := recover(); err != nil {
+			s := string(debug.Stack())
+			log.Error("recover: err=%v\n stack=%s", err, s)
+		}
+	}()
+
 	log.Infof("#####UpdateBountyContractAndTransactoinStatus: bountyId-> %d, status->%d, contractAddress->%s", bountyID, status, contractAddress)
 	err := model.UpdateTransactionStatus(tx, bountyID, status)
 	if err != nil {

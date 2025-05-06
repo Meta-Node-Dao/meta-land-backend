@@ -15,13 +15,13 @@ import (
 	"github.com/qiniu/x/log"
 )
 
-// LoginWithGithubCallback login with github oauth
 func LoginWithGithubCallback(ctx *router.Context) {
 	loginWithOauth(ctx, model.GithubOauth, func(code string) (auth.OauthAccount, error) {
 		client := auth.NewGithubOauthClient(code)
 		return client.GetUserProfile()
 	})
 }
+
 func extractComerIdFromJwtToken(ctx *router.Context) (comerID uint64, err error) {
 	comunioAuthHeader := ctx.GetHeader("X-COMUNION-AUTHORIZATION")
 	if strings.Trim(comunioAuthHeader, " ") == "" {
@@ -34,7 +34,6 @@ func extractComerIdFromJwtToken(ctx *router.Context) (comerID uint64, err error)
 	return
 }
 
-// LoginWithGoogleCallback login with google oauth callback
 func LoginWithGoogleCallback(ctx *router.Context) {
 	loginWithOauth(ctx, model.GoogleOauth, func(code string) (auth.OauthAccount, error) {
 		client := auth.NewGoogleClient(code)
@@ -42,7 +41,6 @@ func LoginWithGoogleCallback(ctx *router.Context) {
 	})
 }
 
-// GetBlockchainLoginNonce get the blockchain login nonce.
 func GetBlockchainLoginNonce(ctx *router.Context) {
 	address := ctx.Param("address")
 	if address == "" {
@@ -60,7 +58,6 @@ func GetBlockchainLoginNonce(ctx *router.Context) {
 	ctx.OK(nonce)
 }
 
-// LoginWithWallet login with the wallet signature.
 func LoginWithWallet(ctx *router.Context) {
 	var request model.EthLoginRequest
 	if err := ctx.ShouldBindJSON(&request); err != nil {
@@ -79,7 +76,6 @@ func LoginWithWallet(ctx *router.Context) {
 	ctx.OK(response)
 }
 
-// RegisterWithOauth 基于oauth帐号注册，创建profile, 首次用oauth登录并不连接到已有Comer时候点取消时候的注册接口
 func RegisterWithOauth(ctx *router.Context) {
 	var request model.RegisterWithOauthRequest
 	if err := ctx.ShouldBindJSON(&request); err != nil {
@@ -252,7 +248,7 @@ func bindOauth(oauth auth.OauthAccount, oauthType model.ComerAccountType, logonC
 		if crtComerAccount.ID == 0 {
 			crtComerAccount = model.ComerAccount{
 				ComerID:   logonComerId,
-				OIN:       oauth.GetUserID(),
+				Oin:       oauth.GetUserID(),
 				IsPrimary: true,
 				Nick:      oauth.GetUserNick(),
 				Avatar:    oauth.GetUserAvatar(),
@@ -317,7 +313,7 @@ func justLoginWithOauth(oauth auth.OauthAccount, oauthType model.ComerAccountTyp
 			}
 			comerAccount = model.ComerAccount{
 				ComerID:   comer.ID,
-				OIN:       oauth.GetUserID(),
+				Oin:       oauth.GetUserID(),
 				IsPrimary: true,
 				Nick:      oauth.GetUserNick(),
 				Avatar:    oauth.GetUserAvatar(),
@@ -367,4 +363,28 @@ func justLoginWithOauth(oauth auth.OauthAccount, oauthType model.ComerAccountTyp
 	loginResponse.ComerID = comerId
 	loginResponse.Token = token
 	return nil, loginResponse
+}
+
+func GithubOauth(ctx *router.Context) {
+	var response account.JwtAuthorizationResponse
+	response.Token = "test_token.GithubOauth"
+	ctx.OK(response)
+}
+
+func GoogleOauth(ctx *router.Context) {
+	var response account.JwtAuthorizationResponse
+	response.Token = "test_token.GoogleOauth"
+	ctx.OK(response)
+}
+
+func LoginByWalletAddress(ctx *router.Context) {
+	var response account.JwtAuthorizationResponse
+	response.Token = "test_token.LoginByWalletAddress"
+	ctx.OK(response)
+}
+
+func GetNonceByAddress(ctx *router.Context) {
+	var response account.WalletNonceResponse
+	response.Nonce = "111111"
+	ctx.OK(response)
 }

@@ -25,7 +25,7 @@ func ActiveProposalStatusSchedule() ecron.Ecron {
 		}
 		return err
 	}
-	return ecron.Load("ceres.crowdfunding.cron").Build(ecron.WithJob(job))
+	return ecron.Load("ceres.status.cron").Build(ecron.WithJob(job))
 }
 
 func EndProposalStatusSchedule() ecron.Ecron {
@@ -37,7 +37,7 @@ func EndProposalStatusSchedule() ecron.Ecron {
 
 		if len(list) > 0 {
 			for _, c := range list {
-				setting, err := GetStartupGovernanceSetting(c.StartupId)
+				setting, err := GetStartupGovernanceSetting(c.StartupID)
 				if err != nil {
 					return err
 				}
@@ -57,5 +57,5 @@ func EndProposalStatusSchedule() ecron.Ecron {
 		}
 		return err
 	}
-	return ecron.Load("ceres.crowdfunding.cron").Build(ecron.WithJob(job))
+	return ecron.Load("ceres.status.cron").Build(ecron.WithJob(job))
 }

@@ -6,14 +6,22 @@ import (
 	model "ceres/pkg/model/startup"
 	team "ceres/pkg/model/startup_team"
 	"errors"
-
 	"gorm.io/gorm"
+	"runtime/debug"
 
 	"github.com/qiniu/x/log"
 )
 
 func HandleStartup(address string, startupProto interface{}, chainID uint64, txHash string) {
+	defer func() {
+		if err := recover(); err != nil {
+			s := string(debug.Stack())
+			log.Error("recover: err=%v\n stack=%s", err, s)
+		}
+	}()
+	
 	log.Info(chainID, "listen startup data: ", startupProto, address)
+
 	startupTemp := startupProto.(struct {
 		Name       string `json:"name"`
 		Mode       uint8  `json:"mode"`
@@ -48,7 +56,7 @@ func HandleStartup(address string, startupProto interface{}, chainID uint64, txH
 			return
 		}
 
-		//create default team member
+		// create default team member
 		teamMember := team.StartupTeamMember{
 			StartupID: startup.ID,
 			ComerID:   comer.ID,

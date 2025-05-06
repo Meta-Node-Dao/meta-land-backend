@@ -28,7 +28,6 @@ func GetConnectorsOfComer(ctx *router.Context) {
 	ctx.OK(pagination)
 }
 
-// GetComersFollowedByComer get comers followed-by-comer
 func GetComersFollowedByComer(ctx *router.Context) {
 	currentComerId, _ := ctx.Keys[middleware.ComerUinContextKey].(uint64)
 	targetComerID, err := strconv.ParseUint(ctx.Param("comerID"), 0, 64)

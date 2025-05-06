@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net"
 	"net/http"
+	"runtime/debug"
 	"sync"
 	"time"
 
@@ -44,7 +45,13 @@ func ListenForAvax() (err error) {
 
 	readMsg := func() {
 		defer waitGroup.Done()
-
+		defer func() {
+			if err := recover(); err != nil {
+				s := string(debug.Stack())
+				log.Error("recover: err=%v\n stack=%s", err, s)
+			}
+		}()
+		
 		for {
 			log.Info("------------conn.ReadMessage()...")
 			mt, msg, err := conn.ReadMessage()
@@ -80,9 +87,9 @@ func ListenForAvax() (err error) {
 	}
 
 	var addresses []string
-	//addresses = append(addresses, "0x7E94572BCc67B6eDa93DBa0493b681dC0ae9E964")
+	// addresses = append(addresses, "0x7E94572BCc67B6eDa93DBa0493b681dC0ae9E964")
 	addresses = append(addresses, "X-fuji193h7kk79amswl697lhuexpef282q24khlxfgrm")
-	//addresses = append(addresses, "X-fuji132sa7p9nmv6gx5qg45l777kr6ct0cjkzz2vpz")
+	// addresses = append(addresses, "X-fuji132sa7p9nmv6gx5qg45l777kr6ct0cjkzz2vpz")
 
 	cmd = &pubsub.Command{AddAddresses: &pubsub.AddAddresses{JSONAddresses: api.JSONAddresses{Addresses: addresses}}}
 	cmdmsg, err = json.Marshal(cmd)

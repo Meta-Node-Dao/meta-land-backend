@@ -2,7 +2,6 @@ package account
 
 import (
 	"ceres/pkg/model"
-	"ceres/pkg/model/tag"
 	"fmt"
 	"strings"
 )
@@ -53,10 +52,9 @@ func (receiver SocialType) String() string {
 	}
 }
 
-// Comer the comer model of comunion inner account
 type Comer struct {
 	model.Base
-	Address *string `gorm:"column:address" json:"address"`
+	Address *string `gorm:"column:address;uniqueIndex" json:"address"`
 }
 
 func (c Comer) HasAddress() bool {
@@ -74,24 +72,21 @@ func (c Comer) AddressStr() string {
 	return ""
 }
 
-// TableName Comer table name for gorm
 func (Comer) TableName() string {
 	return "comer"
 }
 
-// ComerAccount the account model of comer
 type ComerAccount struct {
 	model.Base
-	ComerID   uint64           `gorm:"column:comer_id" json:"comerID"`
-	OIN       string           `gorm:"column:oin" json:"oin"`
-	IsPrimary bool             `gorm:"column:is_primary" json:"isPrimary"`
-	Nick      string           `gorm:"column:nick" json:"nick"`
-	Avatar    string           `gorm:"column:avatar" json:"avatar"`
-	Type      ComerAccountType `gorm:"column:type" json:"type"`
-	IsLinked  bool             `gorm:"column:is_linked" json:"isLinked"`
+	ComerID   uint64           `gorm:"column:comer_id;index" json:"comer_id"`
+	Oin       string           `gorm:"column:oin;uniqueIndex;not null" json:"oin"`
+	IsPrimary bool             `gorm:"column:is_primary;not null" json:"is_primary"`
+	Nick      string           `gorm:"column:nick;not null" json:"nick"`
+	Avatar    string           `gorm:"column:avatar;not null" json:"avatar"`
+	Type      ComerAccountType `gorm:"column:type;not null" json:"type"`
+	IsLinked  bool             `gorm:"column:is_linked;not null" json:"is_linked"`
 }
 
-// TableName the ComerAccount table name for gorm
 func (ComerAccount) TableName() string {
 	return "comer_account"
 }
@@ -120,30 +115,28 @@ func (a ComerAccounts) AccountIds() []uint64 {
 	return ids
 }
 
-// ComerProfile model
+// ComerProfile 用户资料表结构
 type ComerProfile struct {
 	model.Base
-	ComerID    uint64         `gorm:"column:comer_id" json:"comerID"`
-	Name       string         `gorm:"column:name" json:"name"`
-	Avatar     string         `gorm:"column:avatar" json:"avatar"`
-	Cover      string         `gorm:"column:cover" json:"cover"`
-	Location   string         `gorm:"column:location" json:"location"`
-	TimeZone   string         `gorm:"column:time_zone" json:"timeZone"`
-	Website    string         `gorm:"column:website" json:"website"`
-	Email      string         `gorm:"column:email" json:"email"`
-	Twitter    string         `gorm:"column:twitter" json:"twitter"`
-	Discord    string         `gorm:"column:discord" json:"discord"`
-	Telegram   string         `gorm:"column:telegram" json:"telegram"`
-	Medium     string         `gorm:"column:medium" json:"medium"`
-	Facebook   string         `gorm:"column:facebook" json:"facebook"`
-	Linktree   string         `gorm:"column:linktree" json:"linktree"`
-	BIO        string         `gorm:"column:bio" json:"bio"`
-	Skills     []tag.Tag      `gorm:"many2many:tag_target_rel;foreignKey:ComerID;joinForeignKey:TargetID;" json:"skills"`
-	Languages  LanguageInfos  `gorm:"column:languages;type:json" json:"languages"`
-	Educations EducationInfos `gorm:"column:educations;type:json" json:"educations"`
+	ComerID    uint64 `gorm:"column:comer_id;uniqueIndex" json:"comer_id"`
+	Name       string `gorm:"column:name;not null" json:"name"`           // 用户名
+	Avatar     string `gorm:"column:avatar;not null" json:"avatar"`       // 头像URL
+	Cover      string `gorm:"column:cover" json:"cover"`                  // 封面图URL
+	Location   string `gorm:"column:location;default:''" json:"location"` // 所在城市
+	TimeZone   string `gorm:"column:time_zone" json:"time_zone"`          // 时区(如UTC-09:30)
+	Website    string `gorm:"column:website;default:''" json:"website"`   // 个人网站
+	Email      string `gorm:"column:email" json:"email"`                  // 电子邮箱
+	Twitter    string `gorm:"column:twitter" json:"twitter"`              // Twitter账号
+	Discord    string `gorm:"column:discord" json:"discord"`              // Discord账号
+	Telegram   string `gorm:"column:telegram" json:"telegram"`            // Telegram账号
+	Medium     string `gorm:"column:medium" json:"medium"`                // Medium账号
+	Facebook   string `gorm:"column:facebook" json:"facebook"`            // Facebook账号
+	Linktree   string `gorm:"column:linktree" json:"linktree"`            // Linktree链接
+	Bio        string `gorm:"column:bio;type:text" json:"bio"`            // 个人简介
+	Languages  string `gorm:"column:languages" json:"languages"`          // 使用语言
+	Educations string `gorm:"column:educations" json:"educations"`        // 教育经历
 }
 
-// TableName the Profile table name for gorm
 func (ComerProfile) TableName() string {
 	return "comer_profile"
 }
@@ -154,7 +147,6 @@ type FollowRelation struct {
 	TargetComerID uint64 `gorm:"target_comer_id" json:"targetComerID"`
 }
 
-// TableName Followed table name for gorm
 func (FollowRelation) TableName() string {
 	return "comer_follow_rel"
 }

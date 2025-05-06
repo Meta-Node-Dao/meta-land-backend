@@ -97,7 +97,7 @@ func CreateStartup(comerID uint64, request *model.CreateStartupRequest) (err err
 	return
 }
 
-func StartupLists(request *model.StartupListRequest, response *model.StartupListResponse) (err error) {
+func StartupLists(request *model.GetStartupsRequest, response *model.StartupListResponse) (err error) {
 	total, err := model.GetStartupLists(mysql.DB, request, &response.List)
 	if err != nil {
 		log.Warn(err)

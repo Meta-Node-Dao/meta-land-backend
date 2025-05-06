@@ -36,7 +36,7 @@ func GetClient(chainID uint64) (*Client, error) {
 
 // init all chain client
 func Init() error {
-	var resp model.ListResponse
+	var resp model.ChainListResponse
 	err := service.GetChainCompleteList(&resp)
 	if err != nil {
 		log.Warn(err)
@@ -59,7 +59,7 @@ func Init() error {
 		for _, contract := range chain.ChainContracts {
 			if contract.Project == 1 && contract.Type == 1 {
 				chainInfo.StartupContractAddress = contract.Address
-				chainInfo.Abi = contract.Abi
+				chainInfo.Abi = contract.ABI
 			}
 		}
 		Clients[chain.ChainID].ChainInfo = chainInfo

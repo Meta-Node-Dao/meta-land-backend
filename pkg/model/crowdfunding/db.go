@@ -169,11 +169,11 @@ func UpdateCrowdfundingRaiseBalance(tx *gorm.DB, swap CrowdfundingSwap) error {
 		//	mp["status"] = Ended
 		//}
 		mp["raise_balance"] = p
-		return tx.Model(&Crowdfunding{}).Where("is_deleted = false and id = ?", swap.CrowdfundingId).Updates(mp).Error
+		return tx.Model(&Crowdfunding{}).Where("is_deleted = false and id = ?", swap.CrowdfundingID).Updates(mp).Error
 	}
 	p = gorm.Expr("raise_balance - ?", swap.BuyTokenAmount)
 	mp["raise_balance"] = p
-	return tx.Model(&Crowdfunding{}).Where("is_deleted = false and id = ?", swap.CrowdfundingId).Updates(mp).Error
+	return tx.Model(&Crowdfunding{}).Where("is_deleted = false and id = ?", swap.CrowdfundingID).Updates(mp).Error
 }
 
 func QuerySwapListByCrowdfundingId(db *gorm.DB, crowdfundingId uint64, pagination *model.Pagination) (err error) {
