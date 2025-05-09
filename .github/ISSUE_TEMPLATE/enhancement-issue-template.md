@@ -1,7 +1,7 @@
 ---
 name: Enhancement issue template
 about: Do some enhancement for this project.
-title: ''
+title: Describe the enhancement.[ENHANCEMENT]
 labels: enhancement
 assignees: ''
 
